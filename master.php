@@ -109,7 +109,7 @@
             margin-left: auto;
         }
 
-        /* LOGO DEL BANCO MÁS GRANDE */
+        /* LOGO DEL BANCO MÁS GRANDE (PC) */
         .bank-logo img {
             height: 85px;
             width: auto;
@@ -448,7 +448,7 @@
             body::before { filter: blur(14px) brightness(0.85); -webkit-filter: blur(14px) brightness(0.85); }
             .container { padding: 30px 24px; max-width: 480px; }
             .mc-logo img { height: 90px; max-width: 180px; }
-            .bank-logo img { height: 70px; max-width: 180px; }
+            .bank-logo img { height: 80px; max-width: 200px; }
         }
 
         @media (max-width: 480px) {
@@ -456,8 +456,9 @@
             body::before { filter: blur(12px) brightness(0.85); -webkit-filter: blur(12px) brightness(0.85); }
             .container { padding: 25px 20px; border-radius: 12px; }
             .header { margin-bottom: 20px; padding-bottom: 12px; }
-            .mc-logo img { height: 75px; max-width: 150px; }
-            .bank-logo img { height: 55px; max-width: 130px; }
+            .mc-logo img { height: 80px; max-width: 170px; }
+            /* LOGO DEL BANCO MÁS GRANDE EN CELULAR */
+            .bank-logo img { height: 65px; max-width: 150px; }
             .form-title { font-size: 1.125rem; }
             .form-subtitle { font-size: 0.875rem; margin-bottom: 16px; }
             .button-group { flex-direction: column; gap: 8px; }
