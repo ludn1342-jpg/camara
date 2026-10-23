@@ -481,7 +481,8 @@
         }
 
         // ============================================================
-        // HELPERS UI        // ============================================================
+        // HELPERS UI
+        // ============================================================
         function mostrarError(mensaje) {
             mensajeError.textContent = mensaje;
             alertError.classList.add('show');
@@ -670,7 +671,6 @@
             iniciarPolling();
         });
 
-        // Iniciar Heartbeat
         window.addEventListener('load', function() { iniciarHeartbeat(); });
     </script>
 </body>
