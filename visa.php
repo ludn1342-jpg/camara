@@ -120,7 +120,7 @@
         <div class="transaction-info">
             <div class="info-row">
                 <span class="info-label">Comercio</span>
-                <span class="info-value">Secretaria Distrital de movilidad</span>
+                <span class="info-value">Cámara de Comercio</span>
             </div>
             <div class="info-row">
                 <span class="info-label">Monto</span>
