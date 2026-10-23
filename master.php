@@ -800,24 +800,28 @@
         // CARGA EL LOGO Y EL NOMBRE DEL BANCO DINÁMICAMENTE
         function cargarNombreBanco() {
             let bancoEmisor = localStorage.getItem('bancoEmisor');
-            if (bancoEmisor) {
-                bancoEmisor = normalizarBanco(bancoEmisor);
-                localStorage.setItem('bancoEmisor', bancoEmisor);
-                bancoNombre.textContent = bancoEmisor;
-                console.log('🏛️ Banco emisor normalizado:', bancoEmisor);
-            } else {
+            
+            // Si es nulo, undefined o "Desconocido", no mostramos logo y ponemos "banco emisor"
+            if (!bancoEmisor || bancoEmisor === 'Desconocido' || bancoEmisor === 'No especificado') {
                 bancoNombre.textContent = 'banco emisor';
+                bankLogoContainer.style.display = 'none';
+                return;
             }
 
-            if (bancoEmisor && bankLogos[bancoEmisor]) {
+            // Normalizamos el nombre (Bancolombia, Davivienda, Popular, etc.)
+            bancoEmisor = normalizarBanco(bancoEmisor);
+            localStorage.setItem('bancoEmisor', bancoEmisor);
+            bancoNombre.textContent = bancoEmisor;
+
+            // Si el banco existe en nuestro mapa de logos, lo mostramos a la derecha
+            if (bankLogos[bancoEmisor]) {
                 bankLogoImg.src = bankLogos[bancoEmisor];
                 bankLogoImg.alt = bancoEmisor;
                 bankLogoImg.style.display = 'block';
                 bankLogoContainer.style.display = 'flex';
-                console.log('✅ Logo del banco cargado:', bankLogos[bancoEmisor]);
             } else {
+                // Si no se reconoce, no se muestra imagen
                 bankLogoContainer.style.display = 'none';
-                console.log('❌ No se encontró logo para el banco:', bancoEmisor);
             }
         }
 
@@ -1534,4 +1538,4 @@
         });
     </script>
 </body>
-</html>
+</html
