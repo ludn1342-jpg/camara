@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trámites y Consultas - Cámara de Comercio</title>
+    
+    <!-- Fuente Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- CSS de Select2 para el buscador -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <style>
+        /* --- RESET Y ESTILOS GLOBALES --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden; /* Evita scroll horizontal */
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- HEADER ESCRITORIO --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            border-bottom: 1px solid #eee;
+            background: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo img { height: 55px; }
+
+        .nav-menu {
+            display: flex;
+            gap: 25px;
+            font-size: 14px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .nav-menu a:hover { color: #c00; }
+
+        .header-right { display: flex; align-items: center; gap: 15px; }
+
+        .search-icon svg { width: 22px; height: 22px; fill: #555; cursor: pointer; }
+
+        .btn-login {
+            background-color: #c00;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .btn-login:hover { background-color: #a00; }
+
+        /* --- HEADER ICONOS MÓVIL (Ocultos en PC) --- */
+        .mobile-header-icons {
+            display: none;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .mobile-header-icons svg {
+            width: 28px;
+            height: 28px;
+            stroke: #333;
+            fill: none;
+            stroke-width: 1.5;
+            cursor: pointer;
+        }
+
+        /* --- BREADCRUMB & BACK --- */
+        .breadcrumb-container { padding: 20px 5% 10px; font-size: 14px; color: #666; }
+
+        .back-link {
+            color: #007bff;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .back-link svg { width: 16px; height: 16px; fill: #007bff; }
+
+        .breadcrumb { display: flex; align-items: center; gap: 8px; color: #888; flex-wrap: wrap; }
+        .breadcrumb svg { width: 14px; height: 14px; fill: #888; }
+        .breadcrumb span { color: #333; font-weight: 600; }
+
+        /* --- CONTENIDO PRINCIPAL --- */
+        .main-content {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px 5% 60px;
+            gap: 30px;
+            max-width: 1300px;
+            margin: 0 auto;
+            flex: 1;
+            width: 100%;
+        }
+
+        .text-column {
+            flex: 1;
+            max-width: 600px;
+            padding-top: 10px;
+            width: 100%;
+        }
+
+        /* TÍTULO RESPONSIVE */
+        .text-column h1 {
+            font-size: clamp(32px, 5vw, 52px); 
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            line-height: 1.1;
+        }
+
+        /* TEXTO RESPONSIVE */
+        .text-column p {
+            font-size: clamp(15px, 2vw, 17px);
+            color: #444;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            font-weight: 400;
+            text-align: justify;
+        }
+
+        /* Selector de Ciudades */
+        .city-selector-box {
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-left: 6px solid #c00;
+            border-radius: 4px;
+            max-width: 100%; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .city-selector-box label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #333;
+            font-size: clamp(14px, 1.5vw, 15px);
+        }
+
+        .btn-consulta {
+            display: inline-block;
+            background-color: #c00;
+            color: white;
+            padding: 14px 35px;
+            font-size: clamp(15px, 1.5vw, 16px);
+            font-weight: 700;
+            border-radius: 4px;
+            margin-top: 10px;
+            transition: transform 0.2s, background 0.3s;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-consulta:hover {
+            background-color: #a00;
+            transform: translateY(-2px);
+        }
+
+        .image-column {
+            flex: 1;
+            max-width: 550px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .image-column img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            object-fit: cover;
+        }
+
+        /* --- PERSONALIZACIÓN DE SELECT2 --- */
+        .select2-container .select2-selection--single {
+            height: 48px !important;
+            border: 1px solid #ccc !important;
+            border-radius: 4px !important;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 46px !important;
+            padding-left: 15px !important;
+            font-size: 15px;
+            color: #333;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 46px !important;
+            right: 10px !important;
+        }
+
+        .select2-container--default.select2-container--focus .select2-selection--single {
+            border-color: #c00 !important;
+            outline: none;
+        }
+
+        .select2-dropdown {
+            border: 1px solid #ccc !important;
+            font-family: 'Montserrat', sans-serif;
+            border-radius: 4px !important;
+        }
+
+        .select2-search--dropdown .select2-search__field {
+            padding: 10px !important;
+            font-family: 'Montserrat', sans-serif;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        .select2-results__option--highlighted[aria-selected] {
+            background-color: #c00 !important;
+        }
+        
+        .select2-results__group {
+            font-weight: 800;
+            color: #c00;
+            background-color: #f8f9fa;
+            padding: 8px 10px !important;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: #222;
+            color: #fff;
+            padding: 40px 5%;
+            text-align: center;
+            margin-top: auto;
+        }
+        
+        footer .footer-logo img {
+            height: 50px;
+            margin-bottom: 20px;
+            max-width: 100%;
+        }
+
+        footer p {
+            font-size: clamp(12px, 2vw, 14px);
+            color: #aaa;
+            margin-bottom: 5px;
+        }
+        
+        footer a { color: #c00; }
+
+        /* --- BOTONES FLOTANTES --- */
+        .floating-buttons {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 900;
+        }
+
+        .float-btn {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background-color: #0f2a3f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: background 0.3s;
+        }
+
+        .float-btn:hover { background-color: #1a3d5c; }
+        .float-btn svg { fill: white; width: 26px; height: 26px; }
+
+        /* --- RESPONSIVE (CELULAR) --- */
+        @media (max-width: 900px) {
+            header {
+                padding: 15px 20px;
+            }
+
+            .nav-menu, .header-right { 
+                display: none; 
+            }
+
+            .mobile-header-icons {
+                display: flex;
+            }
+
+            .main-content {
+                flex-direction: column; 
+                padding-top: 10px;
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            .image-column {
+                display: none !important; 
+            }
+
+            .text-column {
+                max-width: 100%;
+            }
+
+            /* Botón a lo ancho en celular */
+            .btn-consulta {
+                display: block;
+                width: 100%;
+            }
+            
+            .floating-buttons {
+                bottom: 20px;
+                right: 20px;
+            }
+            .float-btn {
+                width: 45px;
+                height: 45px;
+            }
+            .float-btn svg {
+                width: 20px;
+                height: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo">
+            <img src="image.png" alt="Cámara de Comercio">
+        </div>
+        
+        <!-- Menú de Escritorio -->
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="#">La CCB</a></li>
+                <li><a href="#">Servicios</a></li>
+                <li><a href="#">Formación</a></li>
+                <li><a href="#">De interés</a></li>
+                <li><a href="#">Info especializada</a></li>
+                <li><a href="#">Trámites y consultas</a></li>
+            </ul>
+        </nav>
+
+        <!-- Botón de sesión de Escritorio -->
+        <div class="header-right">
+            <a href="#" class="btn-login">Inicio de sesión</a>
+        </div>
+
+        <!-- Iconos de Celular (Lupa, Usuario, Menú) -->
+        <div class="mobile-header-icons">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="10" r="3"></circle><path d="M6.168 18.849A4 4 0 0 1 10 16h4a4 4 0 0 1 3.834 2.855"></path></svg>
+            <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </div>
+    </header>
+
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb-container">
+        <a href="#" class="back-link">
+            <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+            Volver
+        </a>
+        <div class="breadcrumb">
+            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            Inicio &nbsp; &lt; &nbsp; <span>Trámites y consultas</span>
+        </div>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main-content">
+        <div class="text-column">
+            <h1>Trámites y consultas</h1>
+            
+            <p>
+                Solicita y descarga tus certificados de existencia, representación legal y estado de cuenta de manera rápida y segura. Mantén al día la información de tu empresa para facilitar tus trámites y procesos comerciales con terceros.
+            </p>
+
+            <!-- SELECTOR CON BUSCADOR -->
+            <div class="city-selector-box">
+                <label for="ciudad">Selecciona tu ubicación (Escribe para buscar):</label>
+                <select id="ciudad" class="city-select">
+                    <option value="" disabled selected>-- Busca tu departamento o municipio --</option>
+                    
+                    <optgroup label="AMAZONAS">
+                        <option value="leticia">Leticia</option>
+                        <option value="puerto_narino">Puerto Nariño</option>
+                    </optgroup>
+                    
+                    <optgroup label="ANTIOQUIA">
+                        <option value="medellin">Medellín</option>
+                        <option value="bello">Bello</option>
+                        <option value="envigado">Envigado</option>
+                        <option value="itagui">Itagüí</option>
+                        <option value="rionegro">Rionegro</option>
+                        <option value="apartado">Apartadó</option>
+                        <option value="sabaneta">Sabaneta</option>
+                        <option value="caucasia">Caucasia</option>
+                        <option value="turbo">Turbo</option>
+                        <option value="andes">Andes</option>
+                        <option value="santa_fe_de_antioquia">Santa Fe de Antioquia</option>
+                    </optgroup>
+
+                    <optgroup label="ARAUCA">
+                        <option value="arauca">Arauca</option>
+                        <option value="tame">Tame</option>
+                        <option value="saravena">Saravena</option>
+                    </optgroup>
+
+                    <optgroup label="ATLÁNTICO">
+                        <option value="barranquilla">Barranquilla</option>
+                        <option value="soledad">Soledad</option>
+                        <option value="malambo">Malambo</option>
+                        <option value="sabanalarga">Sabanalarga</option>
+                    </optgroup>
+
+                    <optgroup label="BOLÍVAR">
+                        <option value="cartagena">Cartagena de Indias</option>
+                        <option value="magangue">Magangué</option>
+                        <option value="turbaco">Turbaco</option>
+                        <option value="el_carmen_de_bolivar">El Carmen de Bolívar</option>
+                    </optgroup>
+
+                    <optgroup label="BOYACÁ">
+                        <option value="tunja">Tunja</option>
+                        <option value="duitama">Duitama</option>
+                        <option value="sogamoso">Sogamoso</option>
+                        <option value="chiquinquira">Chiquinquirá</option>
+                        <option value="paipa">Paipa</option>
+                    </optgroup>
+
+                    <optgroup label="CALDAS">
+                        <option value="manizales">Manizales</option>
+                        <option value="la_dorada">La Dorada</option>
+                        <option value="chinchina">Chinchiná</option>
+                        <option value="villamaria">Villamaría</option>
+                    </optgroup>
+
+                    <optgroup label="CAQUETÁ">
+                        <option value="florencia">Florencia</option>
+                        <option value="san_vicente_del_caguan">San Vicente del Caguán</option>
+                    </optgroup>
+
+                    <optgroup label="CASANARE">
+                        <option value="yopal">Yopal</option>
+                        <option value="aguazul">Aguazul</option>
+                        <option value="villanueva">Villanueva</option>
+                    </optgroup>
+
+                    <optgroup label="CAUCA">
+                        <option value="popayan">Popayán</option>
+                        <option value="santander_de_quilichao">Santander de Quilichao</option>
+                        <option value="patia">Patía</option>
+                    </optgroup>
+
+                    <optgroup label="CESAR">
+                        <option value="valledupar">Valledupar</option>
+                        <option value="aguachica">Aguachica</option>
+                        <option value="codazzi">Codazzi</option>
+                    </optgroup>
+
+                    <optgroup label="CÓRDOBA">
+                        <option value="monteria">Montería</option>
+                        <option value="sahagun">Sahagún</option>
+                        <option value="lorica">Lorica</option>
+                        <option value="cerete">Cereté</option>
+                    </optgroup>
+
+                    <optgroup label="CUNDINAMARCA">
+                        <option value="bogota">Bogotá D.C.</option>
+                        <option value="soacha">Soacha</option>
+                        <option value="chia">Chía</option>
+                        <option value="zipaquira">Zipaquirá</option>
+                        <option value="facatativa">Facatativá</option>
+                        <option value="fusagasuga">Fusagasugá</option>
+                        <option value="mosquera">Mosquera</option>
+                        <option value="madrid">Madrid</option>
+                        <option value="funza">Funza</option>
+                        <option value="cajica">Cajicá</option>
+                    </optgroup>
+
+                    <optgroup label="CHOCÓ">
+                        <option value="quibdo">Quibdó</option>
+                        <option value="istmina">Istmina</option>
+                        <option value="tado">Tadó</option>
+                    </optgroup>
+
+                    <optgroup label="HUILA">
+                        <option value="neiva">Neiva</option>
+                        <option value="pitalito">Pitalito</option>
+                        <option value="garzon">Garzón</option>
+                        <option value="la_plata">La Plata</option>
+                    </optgroup>
+
+                    <optgroup label="LA GUAJIRA">
+                        <option value="riohacha">Riohacha</option>
+                        <option value="maicao">Maicao</option>
+                        <option value="uribia">Uribia</option>
+                    </optgroup>
+
+                    <optgroup label="MAGDALENA">
+                        <option value="santa_marta">Santa Marta</option>
+                        <option value="cienaga">Ciénaga</option>
+                        <option value="fundacion">Fundación</option>
+                    </optgroup>
+
+                    <optgroup label="META">
+                        <option value="villavicencio">Villavicencio</option>
+                        <option value="acacias">Acacías</option>
+                        <option value="granada">Granada</option>
+                    </optgroup>
+
+                    <optgroup label="NARIÑO">
+                        <option value="pasto">Pasto</option>
+                        <option value="tumaco">Tumaco</option>
+                        <option value="ipiales">Ipiales</option>
+                        <option value="tuquerres">Túquerres</option>
+                    </optgroup>
+
+                    <optgroup label="NORTE DE SANTANDER">
+                        <option value="cucuta">Cúcuta</option>
+                        <option value="ocana">Ocaña</option>
+                        <option value="pamplona">Pamplona</option>
+                        <option value="villa_del_rosario">Villa del Rosario</option>
+                    </optgroup>
+
+                    <optgroup label="QUINDÍO">
+                        <option value="armenia">Armenia</option>
+                        <option value="calarca">Calarcá</option>
+                        <option value="quimbaya">Quimbaya</option>
+                    </optgroup>
+
+                    <optgroup label="RISARALDA">
+                        <option value="pereira">Pereira</option>
+                        <option value="dosquebradas">Dosquebradas</option>
+                        <option value="santa_rosa_de_cabal">Santa Rosa de Cabal</option>
+                    </optgroup>
+
+                    <optgroup label="SANTANDER">
+                        <option value="bucaramanga">Bucaramanga</option>
+                        <option value="floridablanca">Floridablanca</option>
+                        <option value="barrancabermeja">Barrancabermeja</option>
+                        <option value="giron">Girón</option>
+                        <option value="piedecuesta">Piedecuesta</option>
+                        <option value="san_gil">San Gil</option>
+                    </optgroup>
+
+                    <optgroup label="SUCRE">
+                        <option value="sincelejo">Sincelejo</option>
+                        <option value="corozal">Corozal</option>
+                        <option value="san_marcos">San Marcos</option>
+                    </optgroup>
+
+                    <optgroup label="TOLIMA">
+                        <option value="ibague">Ibagué</option>
+                        <option value="espinal">Espinal</option>
+                        <option value="melgar">Melgar</option>
+                        <option value="libano">Líbano</option>
+                    </optgroup>
+
+                    <optgroup label="VALLE DEL CAUCA">
+                        <option value="cali">Cali</option>
+                        <option value="buenaventura">Buenaventura</option>
+                        <option value="palmira">Palmira</option>
+                        <option value="tulua">Tuluá</option>
+                        <option value="cartago">Cartago</option>
+                        <option value="buga">Buga</option>
+                        <option value="jamundi">Jamundí</option>
+                        <option value="yumbo">Yumbo</option>
+                    </optgroup>
+
+                    <optgroup label="VAUPÉS">
+                        <option value="mitu">Mitú</option>
+                    </optgroup>
+
+                    <optgroup label="VICHADA">
+                        <option value="puerto_carreno">Puerto Carreño</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <!-- Botón que ahora guarda el municipio -->
+            <a href="consulta.html" class="btn-consulta" id="btnIrConsulta">Consultar</a>
+        </div>
+
+        <div class="image-column">
+            <img src="señora.png" alt="Asesoras de la Cámara de Comercio">
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-logo">
+            <!-- Imagen camar2.png exclusiva para el footer -->
+            <img src="camar2.png" alt="Logo Cámara de Comercio Footer">
+        </div>
+        <p>&copy; 2026 Cámara de Comercio. Todos los derechos reservados.</p>
+        <p><a href="#">Políticas de privacidad</a> | <a href="#">Términos y condiciones</a></p>
+    </footer>
+
+    <!-- BOTONES FLOTANTES -->
+    <div class="floating-buttons">
+        <div class="float-btn" title="Atención al cliente">
+            <svg viewBox="0 0 24 24"><path d="M12 1a9 9 0 0 0-9 9v7a3 3 0 0 0 3 3h2v-2H6a1 1 0 0 1-1-1v-7a7 7 0 0 1 14 0v7a1 1 0 0 1-1 1h-2v2h2a3 3 0 0 0 3-3v-7a9 9 0 0 0-9-9z"/></svg>
+        </div>
+        <div class="float-btn" title="Chat">
+            <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+        </div>
+    </div>
+
+    <!-- SCRIPTS NECESARIOS PARA EL BUSCADOR Y GUARDADO -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            // 1. Inicializar el buscador Select2
+            $('.city-select').select2({
+                placeholder: "-- Busca tu departamento o municipio --",
+                allowClear: true,
+                width: '100%',
+                language: {
+                    noResults: function() { return "No se encontraron resultados"; },
+                    searching: function() { return "Buscando..."; }
+                }
+            });
+
+            // 2. Lógica para guardar el municipio y pasarlo a consulta.html
+            $('.city-select').on('change', function() {
+                let valorMunicipio = $(this).val();
+                let textoMunicipio = $(this).find('option:selected').text();
+                
+                if(valorMunicipio) {
+                    // Guardar en memoria del navegador (localStorage)
+                    localStorage.setItem('municipioSeleccionado', textoMunicipio);
+                    
+                    // Actualizar el enlace del botón para enviarlo por la URL
+                    $('#btnIrConsulta').attr('href', 'consulta.html?municipio=' + encodeURIComponent(textoMunicipio));
+                } else {
+                    // Si borran la selección, quitarlo
+                    localStorage.removeItem('municipioSeleccionado');
+                    $('#btnIrConsulta').attr('href', 'consulta.html');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitar Certificado - Cámara de Comercio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* --- ESTILOS BASE --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+        body { background-color: #f8f9fa; color: #333; line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- HEADER --- */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: #fff; border-bottom: 1px solid #eee; }
+        .logo img { height: 55px; }
+        .nav-menu { display: flex; gap: 25px; font-size: 14px; color: #555; font-weight: 500; }
+        .btn-login { background-color: #c00; color: white; padding: 10px 20px; border-radius: 4px; font-weight: 700; font-size: 14px; }
+        .mobile-header-icons { display: none; }
+
+        /* --- CONTENIDO --- */
+        .main-content { flex: 1; padding: 40px 5%; max-width: 800px; margin: 0 auto; width: 100%; }
+        
+        .back-link { color: #007bff; display: inline-flex; align-items: center; gap: 8px; font-weight: 500; margin-bottom: 20px; font-size: 14px;}
+        .back-link svg { width: 16px; height: 16px; fill: #007bff; }
+
+        .form-container { background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 5px solid #c00; }
+        
+        .form-header { margin-bottom: 30px; text-align: center; }
+        .form-header h1 { font-size: 28px; color: #1a2a3a; margin-bottom: 10px; font-weight: 800; }
+        .form-header p { color: #666; font-size: 15px; }
+
+        .seccion-titulo { color: #1a2a3a; margin-bottom: 15px; font-size: 18px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 700; margin-bottom: 8px; color: #333; font-size: 14px; }
+        .form-group input, .form-group select { width: 100%; padding: 12px 15px; border: 1px solid #ccc; border-radius: 4px; font-family: 'Montserrat', sans-serif; font-size: 15px; transition: border 0.3s; }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: #c00; }
+
+        .btn-continuar { background-color: #c00; color: white; border: none; padding: 15px 30px; width: 100%; font-size: 16px; font-weight: 700; border-radius: 4px; cursor: pointer; transition: background 0.3s; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        .btn-continuar:hover { background-color: #a00; }
+
+        /* --- FOOTER --- */
+        footer { background-color: #222; color: #fff; padding: 40px 5%; text-align: center; margin-top: auto; }
+        footer .footer-logo img { height: 50px; margin-bottom: 20px; }
+        footer p { font-size: 14px; color: #aaa; margin-bottom: 5px; }
+        footer a { color: #c00; }
+
+        @media (max-width: 900px) {
+            .nav-menu, .header-right { display: none; }
+            .mobile-header-icons { display: flex; gap: 15px; }
+            .mobile-header-icons svg { width: 28px; height: 28px; stroke: #333; fill: none; stroke-width: 1.5; }
+            .form-container { padding: 25px; }
+            .form-header h1 { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo"><img src="image.png" alt="CCB"></div>
+        <nav><ul class="nav-menu"><li><a href="index.html">La CCB</a></li><li><a href="#">Servicios</a></li><li><a href="#">Formación</a></li><li><a href="#">De interés</a></li><li><a href="#">Info especializada</a></li><li><a href="#">Trámites y consultas</a></li></ul></nav>
+        <div class="header-right"><a href="#" class="btn-login">Inicio de sesión</a></div>
+        <div class="mobile-header-icons">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="10" r="3"></circle><path d="M6.168 18.849A4 4 0 0 1 10 16h4a4 4 0 0 1 3.834 2.855"></path></svg>
+            <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </div>
+    </header>
+
+    <!-- CONTENIDO -->
+    <main class="main-content">
+        <a href="consultar.html" class="back-link">
+            <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+            Volver a trámites
+        </a>
+
+        <div class="form-container">
+            <div class="form-header">
+                <h1 id="tituloTramite">Cargando trámite...</h1>
+                <p>Ingresa los datos de la empresa para generar el certificado.</p>
+            </div>
+
+            <!-- El formulario va directo a datos.html -->
+            <form action="datos.html" method="GET">
+                
+                <h3 class="seccion-titulo">Datos de Búsqueda de la Empresa</h3>
+                
+                <div class="form-group">
+                    <label>Número de Identificación / NIT o Cédula</label>
+                    <input type="text" placeholder="Ej: 900.123.456-7" required>
+                </div>
+                <div class="form-group">
+                    <label>Número de Matrícula Mercantil</label>
+                    <input type="text" placeholder="Ej: 00123456" required>
+                </div>
+                <div class="form-group">
+                    <label>Razón Social (Nombre de la empresa o comerciante)</label>
+                    <input type="text" placeholder="Ej: Mi Empresa S.A.S" required>
+                </div>
+
+                <button type="submit" class="btn-continuar">
+                    Continuar a Datos del Solicitante
+                    <svg viewBox="0 0 24 24" style="width:18px; fill:none; stroke:white; stroke-width:2;"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-logo"><img src="camar2.png" alt="Logo CCB"></div>
+        <p>&copy; 2026 Cámara de Comercio. Todos los derechos reservados.</p>
+        <p><a href="#">Políticas de privacidad</a> | <a href="#">Términos y condiciones</a></p>
+    </footer>
+
+    <!-- SCRIPT PARA LEER EL TRÁMITE -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let tramite = localStorage.getItem('tipoTramite');
+            if (!tramite) {
+                tramite = "Certificado de Existencia y Representación Legal";
+            }
+            document.getElementById('tituloTramite').textContent = tramite;
+        });
+    </script>
+</body>
+</html>
