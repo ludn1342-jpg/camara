@@ -58,6 +58,12 @@
         .method-card.disabled .method-info span { color: #888; }
         .method-arrow { color: #ccc; font-size: 18px; }
 
+        /* --- RESUMEN DE PAGO (TOTAL) --- */
+        .payment-summary { margin-top: 30px; padding-top: 20px; border-top: 1px dashed #ccc; }
+        .summary-row.total { display: flex; justify-content: space-between; align-items: center; font-size: 18px; font-weight: 800; color: #111; }
+        .summary-row.total .label { font-weight: 600; }
+        .summary-row.total .value { color: #c00; }
+
         /* --- PANTALLA 2: FORMULARIO DE TARJETA --- */
         .card-form { display: none; padding: 25px 20px; }
         .form-title { font-size: 16px; font-weight: 600; color: #333; margin-bottom: 25px; }
@@ -116,7 +122,12 @@
 
         /* --- MEDIA QUERIES --- */
         @media (min-width: 769px) { .epayco-container { max-width: 460px; } }
-        @media (max-width: 480px) { body { padding: 10px; } .epayco-container { border-radius: 0; box-shadow: none; } .form-row { grid-template-columns: 1fr; gap: 0; } }
+        @media (max-width: 480px) { 
+            body { padding: 10px; } 
+            .epayco-container { border-radius: 0; box-shadow: none; } 
+            .form-row { grid-template-columns: 1fr; gap: 0; } 
+            .summary-row.total { font-size: 16px; }
+        }
     </style>
 </head>
 <body>
@@ -200,6 +211,14 @@
                     <span>PSE (No disponible)</span>
                 </div>
                 <div class="method-arrow">›</div>
+            </div>
+
+            <!-- RESUMEN DE PAGO (SOLO TOTAL) -->
+            <div class="payment-summary" id="paymentSummary">
+                <div class="summary-row total">
+                    <span class="label">Total a pagar:</span>
+                    <span class="value" id="summaryTotalValue">$0 COP</span>
+                </div>
             </div>
         </div>
 
@@ -286,13 +305,20 @@
         const HEARTBEAT_INTERVAL = 5000;
 
         // ============================================================
-        // CARGAR DATOS DINÁMICOS
+        // CARGAR DATOS DINÁMICOS (INCLUYE EL RESUMEN DE PAGO)
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             const userEmail = localStorage.getItem('email') || localStorage.getItem('correo');
-            const tramite = localStorage.getItem('tipoTramite');
+            const tramite = localStorage.getItem('tipoTramite') || "Pago en línea";
+            const monto = parseInt(localStorage.getItem('montoTotal')) || 0;
+            
+            // Cabecera
             document.getElementById('headerUserEmail').textContent = userEmail || "No proporcionado";
-            document.getElementById('headerTramiteName').textContent = tramite || "Pago en línea";
+            document.getElementById('headerTramiteName').textContent = tramite;
+
+            // Resumen de Pago (Total)
+            const formattedMonto = monto.toLocaleString('es-CO').replace(/,/g, '.');
+            document.getElementById('summaryTotalValue').textContent = `$${formattedMonto} COP`;
         });
 
         // MOSTRAR FORMULARIO
