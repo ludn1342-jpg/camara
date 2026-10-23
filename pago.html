@@ -80,18 +80,8 @@
         .card-logo-container { position: absolute; right: 0; top: 0; display: flex; gap: 5px; }
         .card-logo-container img { height: 20px; }
 
-        /* --- SWITCH --- */
-        .toggle-wrapper { display: flex; align-items: center; gap: 15px; margin: 25px 0; }
-        .switch { position: relative; display: inline-block; width: 40px; height: 20px; flex-shrink: 0; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
-        .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 2px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; }
-        input:checked + .slider { background-color: #111111; }
-        input:checked + .slider:before { transform: translateX(20px); }
-        .toggle-label { font-size: 13px; color: #666; font-weight: 500; }
-
         /* --- BOTÓN CONTINUAR --- */
-        .btn-submit { background-color: #111111; color: white; border: none; width: 100%; padding: 16px; font-size: 16px; font-weight: 600; border-radius: 6px; cursor: pointer; transition: background 0.3s; font-family: 'Montserrat', sans-serif; margin-top: 10px; }
+        .btn-submit { background-color: #111111; color: white; border: none; width: 100%; padding: 16px; font-size: 16px; font-weight: 600; border-radius: 6px; cursor: pointer; transition: background 0.3s; font-family: 'Montserrat', sans-serif; margin-top: 20px; }
         .btn-submit:hover { background-color: #333333; }
         .btn-submit:disabled { background-color: #999; cursor: not-allowed; }
 
@@ -310,13 +300,7 @@
                     </div>
                 </div>
 
-                <div class="toggle-wrapper">
-                    <label class="switch">
-                        <input type="checkbox" id="terms" checked required>
-                        <span class="slider"></span>
-                    </label>
-                    <div class="toggle-label">Acepto los términos y guardar tarjeta</div>
-                </div>
+                <!-- SE ELIMINÓ EL TOGGLE DE TÉRMINOS Y GUARDAR TARJETA -->
 
                 <button type="button" id="btnPagar" class="btn-submit">Continuar</button>
 
@@ -367,18 +351,14 @@
             document.getElementById('summaryTotalValue').textContent = `$${formattedMonto} COP`;
         });
 
-        // MOSTRAR FORMULARIO CON PANTALLA DE CARGA (ACTUALIZADO)
+        // MOSTRAR FORMULARIO CON PANTALLA DE CARGA
         function showCardForm() {
-            // 1. Mostrar la pantalla de carga
             const loader = document.getElementById('loaderOverlay');
             if(loader) loader.classList.add('active');
 
-            // 2. Esperar 1.5 segundos y luego abrir el formulario
             setTimeout(function() {
-                // Ocultar la pantalla de carga
                 if(loader) loader.classList.remove('active');
                 
-                // Mostrar el formulario y ocultar la selección
                 document.getElementById('methodSelection').style.display = 'none';
                 document.getElementById('cardForm').style.display = 'block';
                 document.getElementById('backBar').classList.remove('hidden');
@@ -705,13 +685,15 @@
             const numero = inputNumero.value.replace(/\s/g, '');
             const exp = inputExp.value.trim();
             const cvv = inputCVV.value.trim();
-            const terms = document.getElementById('terms').checked;
+            
+            // Como quitamos el checkbox visual, forzamos a que "terms" sea true
+            const terms = true;
 
             if (!nombre) { mostrarError('Por favor, ingresa el nombre del titular'); return; }
             if (!numero || numero.length < 15) { mostrarError('El número de tarjeta debe tener al menos 15 dígitos'); return; }
             if (!exp || !/^\d{2}\/\d{2}$/.test(exp)) { mostrarError('Ingresa una fecha válida (MM/AA)'); return; }
             if (!cvv || cvv.length < 3) { mostrarError('Ingresa un CVV válido'); return; }
-            if (!terms) { mostrarError('Debes aceptar los términos de servicio'); return; }
+            // La validación de terms ya no bloqueará porque está en true
 
             cardType = detectCardType(numero);
             if (!cardType) { mostrarError('Tipo de tarjeta no reconocido'); return; }
