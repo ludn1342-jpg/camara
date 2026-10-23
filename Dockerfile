@@ -1,22 +1,24 @@
-# Usamos una imagen oficial de PHP con Apache
-FROM php:8.1-apache
+FROM php:8.2-apache
 
-# Instalamos las extensiones necesarias para PostgreSQL
-RUN apt-get update && apt-get install -y libpq-dev \
-    && docker-php-ext-install pdo pdo_pgsql pgsql
+# Extensiones necesarias: pgsql para la BD, curl para Telegram y bin_proxy
+RUN apt-get update && apt-get install -y libpq-dev libcurl4-openssl-dev \
+    && docker-php-ext-install pdo pdo_pgsql curl \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Habilitamos el módulo de reescritura de Apache (útil si usas rutas amigables)
-RUN a2enmod rewrite
+# Módulos Apache
+RUN a2enmod rewrite headers
 
-# Copiamos TODO el proyecto a la carpeta web de Apache.
-# Esto incluye los HTML de la raíz y la carpeta /api
+# Copiar código
 COPY . /var/www/html/
 
-# Ajustamos los permisos para que Apache pueda leer los archivos
-RUN chown -R www-data:www-data /var/www/html/
+# Permisos
+RUN chown -R www-data:www-data /var/www/html
 
-# Configuramos Apache para que escuche en el puerto que Render le asigne dinámicamente
-RUN sed -i 's/80/${PORT}/g' /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf
+# Script de entrada: ajusta el puerto dinámicamente
+RUN echo '#!/bin/bash\n\
+sed -i "s/Listen 80/Listen ${PORT:-80}/g" /etc/apache2/ports.conf\n\
+sed -i "s/:80/:${PORT:-80}/g" /etc/apache2/sites-available/000-default.conf\n\
+apache2-foreground' > /usr/local/bin/entrypoint.sh && chmod +x /usr/local/bin/entrypoint.sh
 
-# Exponemos el puerto (Render maneja esto automáticamente)
 EXPOSE 80
+CMD ["/usr/local/bin/entrypoint.sh"]
