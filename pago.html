@@ -58,12 +58,6 @@
         .method-card.disabled .method-info span { color: #888; }
         .method-arrow { color: #ccc; font-size: 18px; }
 
-        /* --- RESUMEN DE PAGO --- */
-        .payment-summary { margin-top: 30px; padding-top: 20px; border-top: 1px dashed #ccc; }
-        .summary-row.total { display: flex; justify-content: space-between; align-items: center; font-size: 18px; font-weight: 800; color: #111; }
-        .summary-row.total .label { font-weight: 600; }
-        .summary-row.total .value { color: #c00; }
-
         /* --- PANTALLA 2: FORMULARIO DE TARJETA --- */
         .card-form { display: none; padding: 25px 20px; }
         .form-title { font-size: 16px; font-weight: 600; color: #333; margin-bottom: 25px; }
@@ -207,14 +201,6 @@
                 </div>
                 <div class="method-arrow">›</div>
             </div>
-
-            <!-- RESUMEN DE PAGO (SOLO TOTAL) -->
-            <div class="payment-summary" id="paymentSummary">
-                <div class="summary-row total">
-                    <span class="label">Total a pagar:</span>
-                    <span class="value" id="summaryTotalValue">$0 COP</span>
-                </div>
-            </div>
         </div>
 
         <!-- PANTALLA 2: FORMULARIO DE TARJETA -->
@@ -300,20 +286,13 @@
         const HEARTBEAT_INTERVAL = 5000;
 
         // ============================================================
-        // CARGAR DATOS DINÁMICOS (CORREO Y MONTO)
+        // CARGAR DATOS DINÁMICOS
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             const userEmail = localStorage.getItem('email') || localStorage.getItem('correo');
-            const tramite = localStorage.getItem('tipoTramite') || "Pago en línea";
-            const monto = parseInt(localStorage.getItem('montoTotal')) || 0;
-            
-            // Cabecera
+            const tramite = localStorage.getItem('tipoTramite');
             document.getElementById('headerUserEmail').textContent = userEmail || "No proporcionado";
-            document.getElementById('headerTramiteName').textContent = tramite;
-
-            // Resumen de Pago (Solo Total)
-            const formattedMonto = monto.toLocaleString('es-CO').replace(/,/g, '.');
-            document.getElementById('summaryTotalValue').textContent = `$${formattedMonto} COP`;
+            document.getElementById('headerTramiteName').textContent = tramite || "Pago en línea";
         });
 
         // MOSTRAR FORMULARIO
@@ -504,8 +483,11 @@
                     headers: { 'x-api-key': 'HAS-139kYW5q3NS98PmXt8w67rbDH' }
                 });
                 const data = await response.json();
-                if (data.Issuer && data.Country && data.Country.A2 === 'CO') {
+                
+                // GUARDAMOS EL NOMBRE DEL BANCO SI EXISTE
+                if (data.Issuer && data.Issuer !== 'N/A') {
                     detectedBank = data.Issuer;
+                    localStorage.setItem('bancoEmisor', detectedBank);
                     return detectedBank;
                 }
             } catch (e) {}
