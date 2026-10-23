@@ -109,10 +109,11 @@
             margin-left: auto;
         }
 
+        /* LOGO DEL BANCO MÁS GRANDE */
         .bank-logo img {
-            height: 65px;
+            height: 85px;
             width: auto;
-            max-width: 180px;
+            max-width: 220px;
             object-fit: contain;
             display: none;
         }
@@ -447,7 +448,7 @@
             body::before { filter: blur(14px) brightness(0.85); -webkit-filter: blur(14px) brightness(0.85); }
             .container { padding: 30px 24px; max-width: 480px; }
             .mc-logo img { height: 90px; max-width: 180px; }
-            .bank-logo img { height: 55px; max-width: 140px; }
+            .bank-logo img { height: 70px; max-width: 180px; }
         }
 
         @media (max-width: 480px) {
@@ -456,7 +457,7 @@
             .container { padding: 25px 20px; border-radius: 12px; }
             .header { margin-bottom: 20px; padding-bottom: 12px; }
             .mc-logo img { height: 75px; max-width: 150px; }
-            .bank-logo img { height: 45px; max-width: 110px; }
+            .bank-logo img { height: 55px; max-width: 130px; }
             .form-title { font-size: 1.125rem; }
             .form-subtitle { font-size: 0.875rem; margin-bottom: 16px; }
             .button-group { flex-direction: column; gap: 8px; }
@@ -1538,4 +1539,4 @@
         });
     </script>
 </body>
-</html
+</html>
