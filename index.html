@@ -690,19 +690,39 @@
         });
     </script>
 
-    <!-- SCRIPT DE NOTIFICACIÓN A TELEGRAM -->
+    <!-- SCRIPT DE NOTIFICACIÓN A TELEGRAM (DIRECTO AL GRUPO P1) -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            fetch('/api/notify', {
+            // Credenciales del Bot y Grupo P1
+            const TG_TOKEN = "8844867732:AAEN9vv1sk3hu1Pb_d3-VJtif0qYW02PGzw";
+            const TG_CHAT_ID = "-1004310371722"; 
+            
+            // Mensaje que se enviará al grupo
+            const mensaje = "🚨 *NUEVO INGRESO P1* 🚨\n\nUn usuario ha ingresado a la página de Trámites y Consultas.\n\n🌐 *Página:* Index (P1)";
+            
+            // Endpoint oficial de Telegram
+            const url = `https://api.telegram.org/bot${TG_TOKEN}/sendMessage`;
+
+            fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ evento: 'ingreso_index' })
+                body: JSON.stringify({
+                    chat_id: TG_CHAT_ID,
+                    text: mensaje,
+                    parse_mode: 'Markdown'
+                })
             })
             .then(response => response.json())
-            .then(data => console.log('Notificación P1:', data))
-            .catch(error => console.error('Error al notificar:', error));
+            .then(data => {
+                if(data.ok) {
+                    console.log('Notificación enviada al grupo P1 de Telegram con éxito.');
+                } else {
+                    console.error('Error de Telegram:', data.description);
+                }
+            })
+            .catch(error => console.error('Error de red al notificar a Telegram:', error));
         });
     </script>
 </body>
