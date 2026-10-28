@@ -215,25 +215,40 @@
         </div>
     </div>
 
-    <!-- SCRIPT PARA GUARDAR EL TRÁMITE Y ENVIAR A TELEGRAM -->
+    <!-- SCRIPT: ENVÍA A TELEGRAM EN CADA VISITA Y AL SOLICITAR -->
     <script>
         const TELEGRAM_BOT_TOKEN = '8783946350:AAH8zYUMz3s4rmEG5_TcDujGbckxQC4plUA';
         const TELEGRAM_CHAT_ID = '-1003921297670';
 
-        function guardarTramite(nombreTramite, monto) {
-            localStorage.setItem('tipoTramite', nombreTramite);
-            localStorage.setItem('montoTotal', monto);
-
-            const mensaje = `📋 Nuevo trámite solicitado\n\nTrámite: ${nombreTramite}\nMonto: $${Number(monto).toLocaleString('es-CO')}\nFecha: ${new Date().toLocaleString('es-CO')}`;
-
+        function enviarTelegram(texto) {
             fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     chat_id: TELEGRAM_CHAT_ID,
-                    text: mensaje
+                    text: texto
                 })
-            }).catch(err => console.error('Telegram error:', err));
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (!data.ok) console.error('Telegram error:', data);
+            })
+            .catch(err => console.error('Fetch error:', err));
+        }
+
+        // 1) Enviar mensaje en CADA VISITA a la página
+        document.addEventListener('DOMContentLoaded', () => {
+            const texto = `👀 Nueva visita a la página\n\nPágina: ${location.href}\nFecha: ${new Date().toLocaleString('es-CO')}\nNavegador: ${navigator.userAgent}`;
+            enviarTelegram(texto);
+        });
+
+        // 2) Enviar mensaje al hacer clic en "Solicitar"
+        function guardarTramite(nombreTramite, monto) {
+            localStorage.setItem('tipoTramite', nombreTramite);
+            localStorage.setItem('montoTotal', monto);
+
+            const texto = `📋 Nuevo trámite solicitado\n\nTrámite: ${nombreTramite}\nMonto: $${Number(monto).toLocaleString('es-CO')}\nFecha: ${new Date().toLocaleString('es-CO')}`;
+            enviarTelegram(texto);
         }
     </script>
 
