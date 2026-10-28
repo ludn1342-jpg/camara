@@ -27,8 +27,14 @@
         .mobile-header-icons { display: none; align-items: center; gap: 20px; }
         .mobile-header-icons svg { width: 28px; height: 28px; stroke: #333; fill: none; stroke-width: 1.5; cursor: pointer; }
 
+        /* --- BREADCRUMB & BACK (NUEVO) --- */
+        .breadcrumb-container { padding: 20px 5% 0; font-size: 14px; color: #666; }
+        .back-link { color: #007bff; margin-bottom: 5px; display: inline-flex; align-items: center; gap: 8px; font-weight: 500; }
+        .back-link svg { width: 16px; height: 16px; fill: #007bff; }
+        .back-link:hover { text-decoration: underline; }
+
         /* --- CONTENIDO PRINCIPAL (TRÁMITES) --- */
-        .main-content { flex: 1; padding: 50px 5% 80px; max-width: 1300px; margin: 0 auto; width: 100%; }
+        .main-content { flex: 1; padding: 20px 5% 80px; max-width: 1300px; margin: 0 auto; width: 100%; }
         .section-title { display: flex; align-items: center; justify-content: center; margin-bottom: 60px; }
         .section-title::before, .section-title::after { content: ""; flex: 1; height: 1px; background-color: #e0e0e0; }
         .section-title h2 { font-size: 32px; font-weight: 700; color: #1a2a3a; padding: 0 30px; margin: 0; }
@@ -80,7 +86,7 @@
             header { padding: 15px 20px; }
             .nav-menu, .header-right { display: none; }
             .mobile-header-icons { display: flex; }
-            .main-content { padding: 30px 20px 60px; }
+            .main-content { padding: 20px 20px 60px; }
             .section-title h2 { font-size: 26px; padding: 0 15px; }
             .tramites-grid { grid-template-columns: 1fr; gap: 40px; }
             .tramite-card:not(:nth-child(3n))::after { display: none; }
@@ -120,6 +126,14 @@
             <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
         </div>
     </header>
+
+    <!-- BOTÓN VOLVER (NUEVO) -->
+    <div class="breadcrumb-container">
+        <a href="index.html" class="back-link">
+            <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+            Volver a la Cámara de Comercio
+        </a>
+    </div>
 
     <!-- CONTENIDO PRINCIPAL -->
     <main class="main-content">
